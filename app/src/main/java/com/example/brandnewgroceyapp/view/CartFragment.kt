@@ -22,6 +22,7 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import es.dmoral.toasty.Toasty
+import jp.wasabeef.recyclerview.animators.LandingAnimator
 import jp.wasabeef.recyclerview.animators.SlideInRightAnimator
 import jp.wasabeef.recyclerview.animators.SlideInUpAnimator
 
@@ -73,8 +74,8 @@ class CartFragment : Fragment(), CartListener, QuantityListener {
     private fun setRecyclerView() {
         binding.cartRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.cartRecyclerView.adapter = adapter
-        binding.cartRecyclerView.itemAnimator = SlideInUpAnimator().apply {
-            addDuration = 1500
+        binding.cartRecyclerView.itemAnimator = LandingAnimator().apply {
+            addDuration = 1000
         }
     }
 

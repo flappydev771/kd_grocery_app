@@ -6,7 +6,16 @@
     tools:context=".view.OrderFragment">
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/orderRecyclerID"
         android:layout_width="match_parent"
         android:padding="10dp"
         android:layout_height="match_parent" />
+
+    <TextView
+        android:text="sdsd"
+        android:visibility="gone"
+        android:id="@+id/test"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

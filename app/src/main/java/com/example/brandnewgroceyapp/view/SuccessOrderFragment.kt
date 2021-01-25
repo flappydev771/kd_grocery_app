@@ -42,9 +42,7 @@ class SuccessOrderFragment : Fragment() {
     @SuppressLint("SimpleDateFormat")
     private fun creteOrderIntoDB(id: String) {
 
-        val map = mapOf(
-            "found" to "1"
-        )
+
         val date = SimpleDateFormat("dd.MM.yyyy").format(Date())
         val orderID = database.push().key.toString()
          val order = ItemOrder(orderID,date,"Cash on Delivery",date,args.totalPrice)

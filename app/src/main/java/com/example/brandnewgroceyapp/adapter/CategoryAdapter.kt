@@ -8,6 +8,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.navigation.Navigation
 import androidx.navigation.findNavController
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import coil.transform.CircleCropTransformation
@@ -16,16 +17,14 @@ import com.example.brandnewgroceyapp.R
 import com.example.brandnewgroceyapp.databinding.CategoryLayoutBinding
 import com.example.brandnewgroceyapp.model.Category
 import com.example.brandnewgroceyapp.util.BindGroceries
+import com.example.brandnewgroceyapp.util.CategoryDiffUtil
 import com.example.brandnewgroceyapp.util.GroceryLisener
 import com.example.brandnewgroceyapp.view.ChatFragmentDirections
 import com.example.brandnewgroceyapp.view.HomeFragmentDirections
 import de.hdodenhof.circleimageview.CircleImageView
 
-class CategoryAdapter(
-    private var categories: List<Category>
-
-) : GroceryLisener, RecyclerView.Adapter<CategoryAdapter.CategoryHolder>() {
-
+class CategoryAdapter : GroceryLisener, RecyclerView.Adapter<CategoryAdapter.CategoryHolder>() {
+    private var categories: List<Category> = emptyList()
 
     class CategoryHolder(itemView: CategoryLayoutBinding) : RecyclerView.ViewHolder(itemView.root) {
 
@@ -65,5 +64,12 @@ class CategoryAdapter(
 
     }
 
+    fun setCategory(newCategories:List<Category>){
+        val diff = CategoryDiffUtil(categories,newCategories)
+        categories = newCategories
+        val cal = DiffUtil.calculateDiff(diff)
+        cal.dispatchUpdatesTo(this)
+
+    }
 
 }

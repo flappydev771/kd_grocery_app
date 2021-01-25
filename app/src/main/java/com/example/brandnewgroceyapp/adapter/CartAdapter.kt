@@ -4,9 +4,11 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.brandnewgroceyapp.databinding.CartItemLayoutBinding
 import com.example.brandnewgroceyapp.model.Grocery
+import com.example.brandnewgroceyapp.util.CartDiffUtil
 import com.example.brandnewgroceyapp.util.CartListener
 import com.example.brandnewgroceyapp.util.QuantityListener
 import com.google.firebase.database.ValueEventListener
@@ -83,9 +85,13 @@ class CartAdapter : RecyclerView.Adapter<CartAdapter.CartItemHolder>() {
         cartListener: CartListener,
         quantityListener: QuantityListener
     ) {
-        groceries = newGroceries
+
         this.cartListener = cartListener
         this.quantityListener = quantityListener
-        notifyDataSetChanged()
+        val diff = CartDiffUtil(groceries,newGroceries)
+        groceries = newGroceries
+        val cal = DiffUtil.calculateDiff(diff)
+        cal.dispatchUpdatesTo(this)
+
     }
 }

@@ -1,13 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
+<layout>
+<data>
+    <variable
+        name="order"
+        type="com.example.brandnewgroceyapp.model.ItemOrder" />
+</data>
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_margin="10dp"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     
     <androidx.cardview.widget.CardView
-        android:layout_margin="10dp"
+        android:layout_margin="5dp"
         android:layout_width="match_parent"
         app:cardElevation="3dp"
         app:cardUseCompatPadding="true"
@@ -37,7 +43,7 @@
                 android:layout_marginLeft="20dp"
                 android:textSize="20sp"
                 android:layout_marginRight="20dp"
-                android:text="Order Data: 12/1/21"
+                setOrderDate="@{order.orderDate}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
             <TextView
@@ -55,7 +61,7 @@
                 android:layout_marginLeft="20dp"
                 android:textSize="20sp"
                 android:layout_marginRight="20dp"
-                android:text="Delivery Date: 12/1/21"
+                setDeliveryDate="@{order.deliveryDate}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
             <TextView
@@ -64,7 +70,7 @@
                 android:layout_marginLeft="20dp"
                 android:textSize="20sp"
                 android:layout_marginRight="20dp"
-                android:text="Total Cost: 122 taka"
+                setCost="@{order.totalPrice}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
         </LinearLayout>
@@ -72,3 +78,4 @@
     </androidx.cardview.widget.CardView>
     
 </LinearLayout>
+</layout>

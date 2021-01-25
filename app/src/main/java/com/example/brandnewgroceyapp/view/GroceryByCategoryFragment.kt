@@ -119,7 +119,7 @@ class GroceryByCategoryFragment : Fragment(), SearchView.OnQueryTextListener,Car
         recycler.layoutManager = layoutManager
         recycler.adapter = adapter
 
-        recycler.itemAnimator = LandingAnimator().apply {
+        recycler.itemAnimator = SlideInUpAnimator().apply {
             addDuration = 1000
 
         }

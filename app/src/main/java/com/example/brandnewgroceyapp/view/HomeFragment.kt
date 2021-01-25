@@ -40,6 +40,7 @@ import com.zl.reik.dilatingdotsprogressbar.DilatingDotsProgressBar
 import dagger.hilt.android.AndroidEntryPoint
 import es.dmoral.toasty.Toasty
 import jp.wasabeef.recyclerview.animators.LandingAnimator
+import jp.wasabeef.recyclerview.animators.SlideInRightAnimator
 import jp.wasabeef.recyclerview.animators.SlideInUpAnimator
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -60,12 +61,7 @@ class HomeFragment : Fragment(), CartListener {
     val groceryAdapter: GroceryAdapter by lazy { GroceryAdapter() }
 
     private val categoryAdapter: CategoryAdapter by lazy {
-        CategoryAdapter(
-            Util.getAllCategories(
-                Util.getCategoryText(),
-                Util.getCategoryImages()
-            )
-        )
+        CategoryAdapter()
     }
     lateinit var layoutManager: LinearLayoutManager
 
@@ -119,9 +115,10 @@ class HomeFragment : Fragment(), CartListener {
         layoutManager.orientation = LinearLayoutManager.HORIZONTAL
         categoryRecyclerID.layoutManager = layoutManager
         categoryRecyclerID.adapter = categoryAdapter
-        categoryRecyclerID.itemAnimator = LandingAnimator().apply {
-            addDuration = 500
-        }
+
+        categoryAdapter.setCategory(
+            Util.getAllCategories(Util.getCategoryText(),Util.getCategoryImages())
+        )
 
     }
 

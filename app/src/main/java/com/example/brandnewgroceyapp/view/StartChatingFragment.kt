@@ -52,7 +52,7 @@ class StartChatingFragment : Fragment() {
         binding.chatRecyclerID.layoutManager = LinearLayoutManager(requireContext())
         binding.chatRecyclerID.adapter = adapter
         binding.chatRecyclerID.itemAnimator = LandingAnimator().apply {
-            addDuration = 2000
+            addDuration = 300
         }
 
         binding.chatFab.setOnClickListener {
@@ -106,7 +106,7 @@ class StartChatingFragment : Fragment() {
                 if (task.isSuccessful) {
                     getChatAndAddToAdapter()
                     binding.msgEditText.text.clear()
-                    Toasty.success(requireContext(), "sent", Toasty.LENGTH_SHORT).show()
+                   // Toasty.success(requireContext(), "sent", Toasty.LENGTH_SHORT).show()
 
                 } else {
                     Toasty.warning(

@@ -2,11 +2,11 @@ package com.example.brandnewgroceyapp.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.brandnewgroceyapp.databinding.OtherUserChatLayoutBinding
 import com.example.brandnewgroceyapp.databinding.UserChatLayoutBinding
 import com.example.brandnewgroceyapp.model.ChatMessage
-import com.example.brandnewgroceyapp.util.CartListener
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
@@ -82,5 +82,6 @@ class ChatingAdapater : RecyclerView.Adapter<ChatingAdapater.ChatHolder>() {
     fun setData(newMessages: List<ChatMessage>) {
         messages = newMessages
         notifyDataSetChanged()
+
     }
 }
