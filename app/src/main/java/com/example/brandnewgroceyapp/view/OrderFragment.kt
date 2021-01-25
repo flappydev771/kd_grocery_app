@@ -38,7 +38,7 @@ class OrderFragment : Fragment() {
 
                 }
                 else{
-                    //do something
+                    //do nothing
                 }
             }
 
