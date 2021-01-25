@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "564368936040",
+    "firebase_url": "https://myfirebase771.firebaseio.com",
+    "project_id": "myfirebase771",
+    "storage_bucket": "myfirebase771.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:564368936040:android:9ce5977d776f82c5dfffdd",
+        "android_client_info": {
+          "package_name": "com.example.brandnewgroceyapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "564368936040-sh8mdbakl7mc8hs66elft69or20ih3f7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBgG7jipt51EaH43XVGGKzA0OAwxH2TkmY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "564368936040-sh8mdbakl7mc8hs66elft69or20ih3f7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

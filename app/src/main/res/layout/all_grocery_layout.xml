@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout>
+
+    <data>
+        <variable
+            name="grocery"
+            type="com.example.brandnewgroceyapp.model.Grocery" />
+
+    </data>
+
+    <LinearLayout
+
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_height="wrap_content">
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            app:cardUseCompatPadding="true"
+            app:cardCornerRadius="5dp"
+            app:cardElevation="5dp"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:layout_margin="10dp"
+                android:layout_height="wrap_content">
+                <ImageView
+
+                    android:id="@+id/groceryItemImageID"
+                    android:scaleType="centerCrop"
+                    android:layout_width="match_parent"
+                    android:layout_gravity="center"
+                    setImage="@{grocery.image}"
+                    android:layout_height="220dp"/>
+
+                <LinearLayout
+                    android:layout_marginTop="3dp"
+                    android:layout_width="match_parent"
+                    android:gravity="center"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_gravity="center"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{grocery.name}"
+                        android:layout_marginRight="5dp"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        />
+                    <TextView
+                        android:layout_gravity="center"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{grocery.description}"
+                        android:layout_marginLeft="5dp"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_marginTop="3dp"
+                    android:layout_width="match_parent"
+                    android:gravity="center"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_gravity="center"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        setPrice1="@{grocery.price1}"
+                        android:layout_marginRight="10dp"
+                        android:textSize="20sp"
+
+                        />
+                    <TextView
+                        android:layout_gravity="center"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        setPrice2="@{grocery.price2}"
+                        android:layout_marginLeft="10dp"
+                        android:textSize="20sp"
+
+                        />
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/addToCartID"
+                    android:layout_marginTop="3dp"
+                    android:layout_gravity="center"
+                    android:text="Add TO Cart"
+                    android:textSize="17sp"
+                    android:drawableLeft="@drawable/ic_cart"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+
+    </LinearLayout>
+
+
+</layout>
+

@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/my_nav"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.example.brandnewgroceyapp.view.HomeFragment"
+        android:label="home"
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_groceryByCategoryFragment"
+            app:destination="@id/groceryByCategoryFragment"
+            app:enterAnim="@anim/from_down"
+            app:exitAnim="@anim/to_up"
+            app:popEnterAnim="@anim/from_up"
+            app:popExitAnim="@anim/to_down" />
+        <action
+            android:id="@+id/action_homeFragment_to_cartFragment"
+            app:destination="@id/cartFragment"
+            app:enterAnim="@anim/from_left"
+            app:exitAnim="@anim/to_right"
+            app:popEnterAnim="@anim/from_right"
+            app:popExitAnim="@anim/to_left" />
+    </fragment>
+    <fragment
+        android:id="@+id/orderFragment"
+        android:name="com.example.brandnewgroceyapp.view.OrderFragment"
+        android:label="order"
+        tools:layout="@layout/fragment_order" />
+    <fragment
+        android:id="@+id/chatFragment"
+        android:name="com.example.brandnewgroceyapp.view.ChatFragment"
+        android:label="chat"
+        tools:layout="@layout/fragment_chat" >
+        <action
+            android:id="@+id/action_chatFragment_to_startChatingFragment"
+            app:destination="@id/startChatingFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/accountFragment"
+        android:name="com.example.brandnewgroceyapp.view.AccountFragment"
+        android:label="account"
+        tools:layout="@layout/fragment_account" />
+    <fragment
+        android:id="@+id/groceryByCategoryFragment"
+        android:name="com.example.brandnewgroceyapp.view.GroceryByCategoryFragment"
+        android:label=""
+        tools:layout="@layout/fragment_grocery_by_category" >
+        <action
+            android:id="@+id/action_groceryByCategoryFragment_to_homeFragment"
+            app:destination="@id/homeFragment"
+            app:enterAnim="@anim/from_up"
+            app:exitAnim="@anim/to_down"
+            app:popEnterAnim="@anim/from_down"
+            app:popExitAnim="@anim/to_up" />
+        <argument
+            android:name="category"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/startChatingFragment"
+        android:name="com.example.brandnewgroceyapp.view.StartChatingFragment"
+        android:label="Chatting"
+        tools:layout="@layout/fragment_start_chating" >
+        <action
+            android:id="@+id/action_startChatingFragment_to_chatFragment"
+            app:destination="@id/chatFragment" />
+        <argument
+            android:name="id"
+            app:argType="string" />
+        <argument
+            android:name="status"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/cartFragment"
+        android:name="com.example.brandnewgroceyapp.view.CartFragment"
+        android:label="Cart"
+        tools:layout="@layout/fragment_cart" >
+        <action
+            android:id="@+id/action_cartFragment_to_homeFragment"
+            app:destination="@id/homeFragment"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/from_left"
+            app:popExitAnim="@anim/to_right" />
+        <action
+            android:id="@+id/action_cartFragment_to_paymentFragment"
+            app:destination="@id/paymentFragment"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/from_left"
+            app:popExitAnim="@anim/to_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/paymentFragment"
+        android:name="com.example.brandnewgroceyapp.view.PaymentFragment"
+        android:label="Payment"
+        tools:layout="@layout/fragment_payment" >
+        <action
+            android:id="@+id/action_paymentFragment_to_cartFragment"
+            app:destination="@id/cartFragment"
+            app:enterAnim="@anim/from_left"
+            app:exitAnim="@anim/to_right"
+            app:popEnterAnim="@anim/from_right"
+            app:popExitAnim="@anim/to_left" />
+        <argument
+            android:name="totalPrice"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_paymentFragment_to_successOrderFragment"
+            app:destination="@id/successOrderFragment"
+            app:enterAnim="@anim/from_left"
+            app:exitAnim="@anim/to_right"
+            app:popEnterAnim="@anim/from_right"
+            app:popExitAnim="@anim/to_left" />
+    </fragment>
+    <fragment
+        android:id="@+id/successOrderFragment"
+        android:name="com.example.brandnewgroceyapp.view.SuccessOrderFragment"
+        android:label="Ordered"
+        tools:layout="@layout/fragment_success_order" >
+        <argument
+            android:name="totalPrice"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_successOrderFragment_to_paymentFragment"
+            app:destination="@id/paymentFragment"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/from_left"
+            app:popExitAnim="@anim/to_right" />
+    </fragment>
+</navigation>

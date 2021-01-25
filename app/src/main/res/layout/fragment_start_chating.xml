@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <FrameLayout
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".view.ChatFragment">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:background="#5B61B9"
+            android:gravity="center"
+            android:layout_height="200dp">
+            <androidx.coordinatorlayout.widget.CoordinatorLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/phoneFab"
+                    android:layout_width="wrap_content"
+                    android:backgroundTint="#8388C7"
+                    app:tint = "#fff"
+                    android:padding="40dp"
+                    android:src="@drawable/ic_phone"
+                    android:layout_marginRight="35dp"
+                    android:layout_marginBottom="70dp"
+                    android:layout_gravity="right"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/chat" />
+            </androidx.coordinatorlayout.widget.CoordinatorLayout>
+        </LinearLayout>
+
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:layout_marginTop="120dp"
+            android:layout_width="match_parent"
+            android:background="@drawable/chat_layout_corner"
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="115dp">
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/chatRecyclerID"
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_height="match_parent"/>
+            </LinearLayout>
+
+            <RelativeLayout
+                android:background="@drawable/round_corner"
+                android:layout_gravity="bottom|center"
+                android:layout_margin="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="70dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:layout_height="match_parent">
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="4"
+                        android:layout_height="wrap_content">
+                        <EditText
+                            android:id="@+id/msgEditText"
+                            android:layout_margin="10dp"
+                            android:padding="5dp"
+                            android:backgroundTint="#F7F7F8"
+                            android:hint="Type your message..."
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"/>
+                    </RelativeLayout>
+                    <com.google.android.material.floatingactionbutton.FloatingActionButton
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:id="@+id/chatFab"
+
+                        app:tint= "#EAE7E7"
+                        android:layout_margin="10dp"
+                        android:backgroundTint="#5B61B9"
+                        android:src="@drawable/ic_send"
+                        android:tint="#ffff"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="@string/chat" />
+
+
+                </LinearLayout>
+
+            </RelativeLayout>
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    </FrameLayout>
+</layout>

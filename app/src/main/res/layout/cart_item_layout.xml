@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout>
+    <data>
+        <variable
+            name="grocery"
+            type="com.example.brandnewgroceyapp.model.Grocery" />
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_margin="10dp"
+        android:layout_height="wrap_content">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            app:cardCornerRadius="5dp"
+            app:cardElevation="5dp"
+            app:cardUseCompatPadding="true"
+            android:layout_height="match_parent">
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_gravity="center"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/itemImageID"
+                    android:layout_width="100dp"
+                    android:layout_height="120dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="24dp"
+                    android:padding="3dp"
+                    setImage="@{grocery.image}"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/breakfast" />
+
+                <TextView
+                    android:id="@+id/itemNameID"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="24dp"
+                    android:text="@{grocery.name}"
+                    android:textSize="20sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.061"
+                    app:layout_constraintStart_toEndOf="@+id/itemImageID"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/itemPriceID"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="60"
+                    setPrice2="@{grocery.price2}"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="@+id/itemNameID"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="@+id/itemNameID"
+                    app:layout_constraintTop_toBottomOf="@+id/itemNameID" />
+
+                <TextView
+                    android:id="@+id/textView7"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:text="Quantity: "
+                    android:textSize="20sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/itemPriceID"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="@+id/itemPriceID"
+                    app:layout_constraintTop_toBottomOf="@+id/itemPriceID" />
+
+                <ImageButton
+                    android:id="@+id/removeButtonID"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginStart="16dp"
+                    android:background="@drawable/round_minus"
+                    android:src="@drawable/ic_remove"
+                    app:layout_constraintBottom_toBottomOf="@+id/textView7"
+                    app:layout_constraintStart_toEndOf="@+id/textView7"
+                    app:layout_constraintTop_toTopOf="@+id/textView7" />
+
+                <RelativeLayout
+                    android:id="@+id/relativeLayout"
+                    android:layout_width="40dp"
+                    android:layout_height="30dp"
+                    android:layout_marginStart="16dp"
+                    android:background="@drawable/round_corner_stroke"
+                    android:gravity="center"
+                    app:layout_constraintBottom_toBottomOf="@+id/removeButtonID"
+                    app:layout_constraintStart_toEndOf="@+id/removeButtonID"
+                    app:layout_constraintTop_toTopOf="@+id/removeButtonID"
+                    app:layout_constraintVertical_bias="0.357">
+
+                    <TextView
+                        android:id="@+id/quantityTextID"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="1"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+                </RelativeLayout>
+
+                <ImageButton
+
+                    android:id="@+id/addButtonID"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginStart="16dp"
+                    android:background="@drawable/round_plus"
+                    android:src="@drawable/ic_add"
+                    app:layout_constraintBottom_toBottomOf="@+id/relativeLayout"
+                    app:layout_constraintStart_toEndOf="@+id/relativeLayout"
+                    app:layout_constraintTop_toTopOf="@+id/relativeLayout"
+                    app:layout_constraintVertical_bias="0.35" />
+
+                <ImageView
+                    android:id="@+id/deleteIconID"
+                    android:layout_width="30dp"
+                    android:layout_height="40dp"
+                    android:layout_marginStart="8dp"
+                    android:scaleType="centerCrop"
+                    app:layout_constraintBottom_toBottomOf="@+id/itemNameID"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.744"
+                    app:layout_constraintStart_toEndOf="@+id/itemNameID"
+                    app:layout_constraintTop_toTopOf="@+id/itemNameID"
+                    app:layout_constraintVertical_bias="1.0"
+                    app:srcCompat="@drawable/ic_baseline_delete_24" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
+
