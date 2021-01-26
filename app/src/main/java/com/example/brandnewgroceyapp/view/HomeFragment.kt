@@ -7,6 +7,7 @@ import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import android.widget.Button
 import android.widget.Toast
 import androidx.compose.runtime.snapshots.takeSnapshot
 import androidx.core.content.ContextCompat
@@ -29,6 +30,7 @@ import com.example.brandnewgroceyapp.util.CartListener
 import com.example.brandnewgroceyapp.util.NetworkState
 import com.example.brandnewgroceyapp.util.Util
 import com.example.brandnewgroceyapp.viewmodel.MainViewModel
+import com.google.android.material.button.MaterialButton
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -55,6 +57,7 @@ class HomeFragment : Fragment(), CartListener {
     private lateinit var database: DatabaseReference
     private var ovalFactory: CountBadge.Factory? = null
     private var count: Int = 1
+    private lateinit var allViewButton: MaterialButton
     private lateinit var dot: DilatingDotsProgressBar
     private lateinit var badge: CountBadge
 
@@ -84,15 +87,21 @@ class HomeFragment : Fragment(), CartListener {
 
         setHasOptionsMenu(true)
         ovalFactory = CountBadge.Factory(
-            BadgeShape.square(0.7f,Gravity.TOP ),
+            BadgeShape.square(0.7f, Gravity.TOP),
             ContextCompat.getColor(requireContext(), R.color.orange),
             ContextCompat.getColor(requireContext(), R.color.white)
 
         )
 
         val view = inflater.inflate(R.layout.fragment_home, container, false)
+        allViewButton = view.findViewById(R.id.viewAllButtonID)
         dot = view.findViewById(R.id.dotProgress)
         database = Firebase.database.reference.child("cart")
+
+        allViewButton.setOnClickListener {
+            ///Toast.makeText(requireContext(),"work",Toast.LENGTH_SHORT).show()
+           findNavController().navigate(R.id.action_homeFragment_to_viewAllFragment)
+        }
 
         Util.setSliders(view)
 
@@ -117,7 +126,7 @@ class HomeFragment : Fragment(), CartListener {
         categoryRecyclerID.adapter = categoryAdapter
 
         categoryAdapter.setCategory(
-            Util.getAllCategories(Util.getCategoryText(),Util.getCategoryImages())
+            Util.getAllCategories(Util.getCategoryText(), Util.getCategoryImages())
         )
 
     }
@@ -144,7 +153,7 @@ class HomeFragment : Fragment(), CartListener {
                 }
                 is NetworkState.Success -> {
 
-                  increaseBadge(Firebase.auth.currentUser!!.uid)
+                    increaseBadge(Firebase.auth.currentUser!!.uid)
 
                     response.data!!.groceries.let {
                         for (item in it) {
@@ -153,7 +162,7 @@ class HomeFragment : Fragment(), CartListener {
                         }
                     }
                     Util.hideDotProgress(dot)
-                    groceryAdapter.setGrocery(response.data.groceries, this)
+                    groceryAdapter.setGrocery(response.data.groceries, this, 6)
                     Log.e("Image", response.data.groceries.get(2).name)
 
                 }
@@ -178,7 +187,7 @@ class HomeFragment : Fragment(), CartListener {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.main_menu, menu)
-        val item:MenuItem = menu.findItem(R.id.action_badge)
+        val item: MenuItem = menu.findItem(R.id.action_badge)
         badge = Badger.sett(item, ovalFactory!!)
         badge.count = 0
         super.onCreateOptionsMenu(menu, inflater)
@@ -186,7 +195,7 @@ class HomeFragment : Fragment(), CartListener {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
-        if(item.itemId == R.id.action_badge){
+        if (item.itemId == R.id.action_badge) {
             findNavController().navigate(R.id.action_homeFragment_to_cartFragment)
         }
 
@@ -252,24 +261,26 @@ class HomeFragment : Fragment(), CartListener {
                         val map = mapOf(
                             "num" to n
                         )
-                        database.child("count").child(id).updateChildren(map).addOnCompleteListener {  task->
-                            if(task.isSuccessful){
-                                increaseBadge(id)
-                            }
+                        database.child("count").child(id).updateChildren(map)
+                            .addOnCompleteListener { task ->
+                                if (task.isSuccessful) {
+                                    increaseBadge(id)
+                                }
 
-                        }
+                            }
 
 
                     } else {
                         val map = mapOf(
                             "num" to count
                         )
-                        database.child("count").child(id).updateChildren(map).addOnCompleteListener { task->
-                            if(task.isSuccessful){
-                                increaseBadge(id)
-                            }
+                        database.child("count").child(id).updateChildren(map)
+                            .addOnCompleteListener { task ->
+                                if (task.isSuccessful) {
+                                    increaseBadge(id)
+                                }
 
-                        }
+                            }
 
                     }
                 }
@@ -282,22 +293,23 @@ class HomeFragment : Fragment(), CartListener {
 
     }
 
-    private fun increaseBadge(id:String) {
-         database.child("count").child(id).addListenerForSingleValueEvent(object :ValueEventListener{
-             override fun onDataChange(snapshot: DataSnapshot) {
-                 if(snapshot.exists()){
-                     val num: String = snapshot.child("num").value.toString()
-                     val n: Int = num.toInt()
-                     badge.count = n
-                 }
+    private fun increaseBadge(id: String) {
+        database.child("count").child(id)
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    if (snapshot.exists()) {
+                        val num: String = snapshot.child("num").value.toString()
+                        val n: Int = num.toInt()
+                        badge.count = n
+                    }
 
-             }
+                }
 
-             override fun onCancelled(error: DatabaseError) {
-                 TODO("Not yet implemented")
-             }
+                override fun onCancelled(error: DatabaseError) {
+                    TODO("Not yet implemented")
+                }
 
-         })
+            })
     }
 
     fun add(grocery: Grocery, id: String) {
@@ -323,8 +335,6 @@ class HomeFragment : Fragment(), CartListener {
 
             }
     }
-
-
 
 
 }

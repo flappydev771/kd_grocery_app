@@ -17,23 +17,27 @@ import com.example.brandnewgroceyapp.view.HomeFragment
 import es.dmoral.toasty.Toasty
 
 
-class GroceryAdapter: RecyclerView.Adapter<GroceryAdapter.GroceryHolder>() {
+class GroceryAdapter : RecyclerView.Adapter<GroceryAdapter.GroceryHolder>() {
 
     private var groceries = emptyList<Grocery>()
     private var cartListener: CartListener? = null
+    private var state: Int = 0
+    private var size:Int = 10
 
 
-    class GroceryHolder(itemView: AllGroceryLayoutBinding) : RecyclerView.ViewHolder(itemView.root)
-        {
+    class GroceryHolder(itemView: AllGroceryLayoutBinding) :
+        RecyclerView.ViewHolder(itemView.root) {
 
         val binding = itemView
-      companion object{
-          fun from(context: Context, viewGroup: ViewGroup):AllGroceryLayoutBinding{
-              val inflater = LayoutInflater.from(context)
-              return AllGroceryLayoutBinding.inflate(inflater, viewGroup, false)
-          }
-      }
-        fun bind(grocery: Grocery){
+
+        companion object {
+            fun from(context: Context, viewGroup: ViewGroup): AllGroceryLayoutBinding {
+                val inflater = LayoutInflater.from(context)
+                return AllGroceryLayoutBinding.inflate(inflater, viewGroup, false)
+            }
+        }
+
+        fun bind(grocery: Grocery) {
             binding.grocery = grocery
         }
     }
@@ -52,15 +56,23 @@ class GroceryAdapter: RecyclerView.Adapter<GroceryAdapter.GroceryHolder>() {
     }
 
     override fun getItemCount(): Int {
-        return groceries.size
+        if(state==6){
+
+            return state
+        }
+        else{
+            return groceries.size
+        }
+
     }
 
-    fun setGrocery(newGroceries: List<Grocery>,cartListener: CartListener){
+    fun setGrocery(newGroceries: List<Grocery>, cartListener: CartListener, state: Int) {
         this.cartListener = cartListener
+        this.state = state
 
-       val groceryDiff = GroceryDiffUtil(groceries, newGroceries)
+        val groceryDiff = GroceryDiffUtil(groceries, newGroceries)
         groceries = newGroceries
-      val diff = DiffUtil.calculateDiff(groceryDiff)
+        val diff = DiffUtil.calculateDiff(groceryDiff)
         diff.dispatchUpdatesTo(this)
 
     }

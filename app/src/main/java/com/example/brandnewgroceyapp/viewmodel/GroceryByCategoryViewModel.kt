@@ -68,6 +68,7 @@ class GroceryByCategoryViewModel @ViewModelInject constructor(
    fun groceryByName(name:String,category: String):LiveData<List<Grocery>> = repository.local.searchDatabase(name,category).asLiveData()
 
 
+    fun groceryByNameOnly(name:String):LiveData<List<Grocery>> = repository.local.searchDatabaseByOnlyName(name).asLiveData()
 
 
 

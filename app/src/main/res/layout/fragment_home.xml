@@ -69,6 +69,7 @@
               android:id="@+id/dotProgress"
               android:layout_width="wrap_content"
               android:layout_gravity="center"
+              android:layout_margin="5dp"
               android:layout_height="wrap_content"
               android:radius="5dp"
               android:color="#FFC107"
@@ -87,7 +88,25 @@
               />
           <LinearLayout
               android:layout_width="match_parent"
-              android:layout_height="60dp"/>
+              android:orientation="vertical"
+              android:layout_margin="10dp"
+              android:layout_height="60dp">
+              <com.google.android.material.button.MaterialButton
+                  android:layout_width="wrap_content"
+                  android:id="@+id/viewAllButtonID"
+                  android:text="View All"
+                  android:layout_margin="5dp"
+                  android:textSize="20dp"
+                  android:layout_gravity="center"
+                  android:textAllCaps="false"
+                  android:textStyle="bold"
+                  app:iconSize="35dp"
+                  style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                  app:icon="@drawable/ic_arrow_right"
+                  app:iconGravity="end"
+
+                  android:layout_height="match_parent"/>
+          </LinearLayout>
 
       </LinearLayout>
   </LinearLayout>

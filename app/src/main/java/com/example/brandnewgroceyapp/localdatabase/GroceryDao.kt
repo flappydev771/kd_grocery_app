@@ -15,4 +15,7 @@ interface GroceryDao {
     @Query("SELECT * FROM grocery_table WHERE name LIKE :name AND category LIKE :category")
     fun searchDatabase(name:String,category: String):Flow<List<Grocery>>
 
+    @Query("SELECT * FROM grocery_table WHERE name LIKE :name")
+    fun searchDatabaseByNameOnly(name:String):Flow<List<Grocery>>
+
 }

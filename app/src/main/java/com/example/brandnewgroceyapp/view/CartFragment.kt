@@ -75,7 +75,7 @@ class CartFragment : Fragment(), CartListener, QuantityListener {
         binding.cartRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.cartRecyclerView.adapter = adapter
         binding.cartRecyclerView.itemAnimator = LandingAnimator().apply {
-            addDuration = 1000
+            addDuration = 700
         }
     }
 

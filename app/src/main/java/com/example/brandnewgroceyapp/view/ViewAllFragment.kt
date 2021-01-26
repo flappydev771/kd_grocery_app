@@ -3,18 +3,13 @@ package com.example.brandnewgroceyapp.view
 import android.os.Bundle
 import android.util.Log
 import android.view.*
-import androidx.fragment.app.Fragment
-import android.view.animation.OvershootInterpolator
-import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.widget.SearchView
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import berlin.volders.badger.CountBadge
 import com.example.brandnewgroceyapp.R
 import com.example.brandnewgroceyapp.adapter.GroceryAdapter
 import com.example.brandnewgroceyapp.model.Grocery
@@ -22,7 +17,7 @@ import com.example.brandnewgroceyapp.util.CartListener
 import com.example.brandnewgroceyapp.util.NetworkState
 import com.example.brandnewgroceyapp.util.Util
 import com.example.brandnewgroceyapp.viewmodel.GroceryByCategoryViewModel
-import com.glide.slider.library.animations.SliderAnimationInterface
+import com.example.brandnewgroceyapp.viewmodel.MainViewModel
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -30,98 +25,95 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
-import com.todkars.shimmer.ShimmerRecyclerView
 import com.zl.reik.dilatingdotsprogressbar.DilatingDotsProgressBar
 import dagger.hilt.android.AndroidEntryPoint
 import es.dmoral.toasty.Toasty
-import jp.wasabeef.recyclerview.adapters.AlphaInAnimationAdapter
-import jp.wasabeef.recyclerview.adapters.ScaleInAnimationAdapter
-import jp.wasabeef.recyclerview.animators.*
+import jp.wasabeef.recyclerview.animators.LandingAnimator
+import jp.wasabeef.recyclerview.animators.SlideInUpAnimator
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
+
 @AndroidEntryPoint
-class GroceryByCategoryFragment : Fragment(), SearchView.OnQueryTextListener,CartListener {
-
-
+class ViewAllFragment : Fragment(),CartListener,SearchView.OnQueryTextListener{
+    private lateinit var mainViewModel: MainViewModel
     private lateinit var dot: DilatingDotsProgressBar
-    private lateinit var myView: View
-    private lateinit var viewMode: GroceryByCategoryViewModel
-    private lateinit var categoryText: TextView
     private var count: Int = 1
-    private lateinit var recycler:ShimmerRecyclerView
+    private lateinit var groceryRecyclerID:RecyclerView
     private lateinit var database: DatabaseReference
-    val adapter: GroceryAdapter by lazy { GroceryAdapter() }
+    private lateinit var viewMode: GroceryByCategoryViewModel
 
-    val args: GroceryByCategoryFragmentArgs by navArgs()
+    private lateinit var myView: View
+    val groceryAdapter: GroceryAdapter by lazy { GroceryAdapter() }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        mainViewModel = ViewModelProvider(this).get(MainViewModel::class.java)
         viewMode = ViewModelProvider(this).get(GroceryByCategoryViewModel::class.java)
-        Log.e("Cat:", args.category)
-    }
 
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
+        // Inflate the layout for this fragment
         setHasOptionsMenu(true)
+        val view = inflater.inflate(R.layout.fragment_view_all, container, false)
         database = Firebase.database.reference.child("cart")
-        val view = inflater.inflate(R.layout.fragment_grocery_by_category, container, false)
         myView = view
-        recycler = view.findViewById(R.id.groceryByCategoryRecyclerID)
-        dot = view.findViewById(R.id.dotProgressID)
-        categoryText = view.findViewById(R.id.categoryTextID)
-        fetchGroceryByCategory()
-        getGroceryByCategory(view)
-        setGroceryRecycler()
+        dot = view.findViewById(R.id.dotProgress)
+        fetchAllGroceries()
+        setAllGroceries(view)
+        setGroceryAdapter(view)
         return view
     }
 
-    fun fetchGroceryByCategory() {
-        viewMode.getGroceryByCategory(args.category)
+    private fun fetchAllGroceries() {
+        mainViewModel.getAllGroceries()
     }
+    private fun setAllGroceries(view: View) {
+        mainViewModel.allGroceries.observe(viewLifecycleOwner, Observer { response ->
 
-    fun getGroceryByCategory(view: View) {
-        viewMode.groceryByCategory.observe(viewLifecycleOwner, Observer { response ->
             when (response) {
                 is NetworkState.Load -> {
+                    Log.e("Load", "loading")
 
-                    showShimmer()
                     Util.showDotProgress(dot)
-                    categoryText.visibility = View.GONE
 
                 }
-
                 is NetworkState.Error -> {
-                    hideShimmer()
-                    categoryText.visibility = View.GONE
+
                     Util.hideDotProgress(dot)
-                    Log.e("Error", "error")
+                    Log.e("Error", "Some Error")
                 }
                 is NetworkState.Success -> {
-                    hideShimmer()
-                    categoryText.visibility = View.VISIBLE
-                    categoryText.text = args.category
+
                     Util.hideDotProgress(dot)
-                    adapter.setGrocery(response.data!!.groceries,this,1)
+                    groceryAdapter.setGrocery(response.data!!.groceries, this,1)
+                    Log.e("Image", response.data.groceries.get(2).name)
+
                 }
 
             }
 
+
         })
     }
+    private fun setGroceryAdapter(view: View) {
 
-    fun setGroceryRecycler() {
-
-        val layoutManager: LinearLayoutManager = LinearLayoutManager(requireContext())
-        recycler.layoutManager = layoutManager
-        recycler.adapter = adapter
-
-        recycler.itemAnimator = SlideInUpAnimator().apply {
-            addDuration = 700
-
+        groceryRecyclerID = view.findViewById(R.id.allGroceryRecyclerID)
+        val layoutManager: LinearLayoutManager =
+            LinearLayoutManager(requireContext())
+        groceryRecyclerID.layoutManager = layoutManager
+        groceryRecyclerID.adapter = groceryAdapter
+        groceryRecyclerID.itemAnimator = LandingAnimator().apply {
+            addDuration = 500
+        }
+    }
+    override fun listen(grocery: Grocery) {
+        lifecycleScope.launch(Dispatchers.IO) {
+            addToCart(grocery)
         }
     }
 
@@ -139,24 +131,22 @@ class GroceryByCategoryFragment : Fragment(), SearchView.OnQueryTextListener,Car
     }
 
     override fun onQueryTextSubmit(query: String?): Boolean {
-
         if (query != null && !query.isEmpty()) {
 
             getDataByname(query)
         } else {
-            getGroceryByCategory(myView)
+            setAllGroceries(myView)
         }
 
         return true
     }
 
     override fun onQueryTextChange(query: String?): Boolean {
-
         if (query != null && !query.isEmpty()) {
 
             getDataByname(query)
         } else {
-            getGroceryByCategory(myView)
+            setAllGroceries(myView)
         }
 
         return true
@@ -164,27 +154,13 @@ class GroceryByCategoryFragment : Fragment(), SearchView.OnQueryTextListener,Car
 
     fun getDataByname(name: String) {
         val searcQuery = "%$name%"
-        val category = "%${args.category}%"
-        viewMode.groceryByName(searcQuery,category).observe(viewLifecycleOwner, Observer { groceries ->
+        viewMode.groceryByNameOnly(searcQuery).observe(viewLifecycleOwner, Observer { groceries ->
 
             groceries.let {
 
-                adapter.setGrocery(it,this,1)
+                groceryAdapter.setGrocery(it,this,1)
             }
         })
-    }
-
-    fun showShimmer(){
-        recycler.showShimmer()
-    }
-    fun hideShimmer(){
-        recycler.hideShimmer()
-    }
-
-    override fun listen(grocery: Grocery) {
-        lifecycleScope.launch(Dispatchers.IO) {
-            addToCart(grocery)
-        }
     }
     private fun addToCart(grocery: Grocery) {
         val id = Firebase.auth.currentUser!!.uid
@@ -278,6 +254,4 @@ class GroceryByCategoryFragment : Fragment(), SearchView.OnQueryTextListener,Car
             })
 
     }
-
-
 }

@@ -12,4 +12,7 @@ class LocalData @Inject constructor(val groceryDao: GroceryDao) {
     fun searchDatabase(name:String,category: String):Flow<List<Grocery>>{
         return groceryDao.searchDatabase(name,category)
     }
+    fun searchDatabaseByOnlyName(name:String):Flow<List<Grocery>>{
+        return groceryDao.searchDatabaseByNameOnly(name)
+    }
 }
