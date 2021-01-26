@@ -6,10 +6,12 @@ import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
 import androidx.navigation.Navigation
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.brandnewgroceyapp.R
 import com.example.brandnewgroceyapp.databinding.UserListLayoutBinding
 import com.example.brandnewgroceyapp.model.Customer
+import com.example.brandnewgroceyapp.util.CustomerDiffUtil
 import com.example.brandnewgroceyapp.util.Listener
 import com.example.brandnewgroceyapp.view.ChatFragmentDirections
 import com.example.brandnewgroceyapp.view.StartChatingFragmentDirections
@@ -46,7 +48,10 @@ class ChatUserAdapter: RecyclerView.Adapter<ChatUserAdapter.UserHolder>(),Listen
 
     }
     fun setData(newUsers:List<Customer>){
+        val diff = CustomerDiffUtil(users,newUsers)
         users = newUsers
-        notifyDataSetChanged()
+        val cal = DiffUtil.calculateDiff(diff)
+        cal.dispatchUpdatesTo(this)
+
     }
 }

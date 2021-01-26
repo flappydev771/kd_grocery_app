@@ -92,7 +92,7 @@ class LoginActivity : BaseActivity() {
     }
 
     fun regTextPressed(view: View) {
-        startActivity(Intent(this, MainActivity::class.java))
+        startActivity(Intent(this, RegistrationActivity::class.java))
         Animatoo.animateSwipeLeft(this)
         finishAffinity()
 

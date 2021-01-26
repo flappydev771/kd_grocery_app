@@ -163,6 +163,7 @@ class HomeFragment : Fragment(), CartListener {
                     }
                     Util.hideDotProgress(dot)
                     groceryAdapter.setGrocery(response.data.groceries, this, 6)
+                    allViewButton.visibility = View.VISIBLE
                     Log.e("Image", response.data.groceries.get(2).name)
 
                 }

@@ -166,6 +166,7 @@
                        android:layout_height="wrap_content"
                        android:layout_marginLeft="10dp"
                        android:text="Login"
+                       android:textStyle="bold"
                        android:onClick="onLogTextClicked"
                        android:textColor="#FFC107"
                        android:textSize="18sp" />

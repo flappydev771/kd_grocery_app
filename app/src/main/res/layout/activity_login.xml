@@ -149,6 +149,7 @@
                         <TextView
                             android:id="@+id/reg_text_id"
                             android:text="Register"
+                            android:textStyle="bold"
                             android:onClick="regTextPressed"
                             android:textColor="#FFC107"
                             android:textSize="18sp"

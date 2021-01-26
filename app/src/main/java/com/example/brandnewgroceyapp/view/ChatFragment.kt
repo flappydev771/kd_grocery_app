@@ -27,6 +27,7 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
 import jp.wasabeef.recyclerview.animators.LandingAnimator
+import jp.wasabeef.recyclerview.animators.SlideInRightAnimator
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -74,12 +75,12 @@ class ChatFragment : Fragment() {
                         getAllUsersFromFireDB()
 
 
-                    Toast.makeText(requireContext(),"seller",Toast.LENGTH_SHORT).show()
+                    //Toast.makeText(requireContext(),"seller",Toast.LENGTH_SHORT).show()
                 }
                 else{
                     getAllSellersFromFireDB()
 
-                    Toast.makeText(requireContext(),"not seller",Toast.LENGTH_SHORT).show()
+                    //Toast.makeText(requireContext(),"not seller",Toast.LENGTH_SHORT).show()
 
                 }
             }
@@ -150,6 +151,9 @@ class ChatFragment : Fragment() {
     private fun setRecyclerView(){
         binding.userRecyclerID.layoutManager = LinearLayoutManager(requireContext())
         binding.userRecyclerID.adapter = adapter
+        binding.userRecyclerID.itemAnimator = SlideInRightAnimator().apply {
+            addDuration = 500
+        }
 
     }
 

@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -30,6 +31,7 @@ class OrderFragment : Fragment() {
     private lateinit var database: DatabaseReference
     private val id = Firebase.auth.currentUser!!.uid
     private lateinit var text:TextView
+    private lateinit var layout:LinearLayout
     private lateinit var orderRecyclerView: RecyclerView
     private val adapter by lazy { OrderAdapter() }
     private var orders:MutableList<ItemOrder> = ArrayList()
@@ -46,6 +48,7 @@ class OrderFragment : Fragment() {
         val view =inflater.inflate(R.layout.fragment_order, container, false)
         //text = view.findViewById(R.id.test)
 
+        layout = view.findViewById(R.id.showNoOrder)
         initRecycler(view)
         swipeToDelete(orderRecyclerView)
 
@@ -69,16 +72,14 @@ class OrderFragment : Fragment() {
         val swipeToDeleteCallback = object : SwipeToDelete() {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val deletedItem = adapter.orders[viewHolder.adapterPosition]
+                adapter.deleteItem(viewHolder.adapterPosition)
                 deleteFromDB(id,deletedItem)
-                adapter.orders.remove(deletedItem)
-                adapter.notifyItemRemoved(viewHolder.adapterPosition)
-
-
-
+                checkOrder(id)
             }
         }
         val itemTouchHelper = ItemTouchHelper(swipeToDeleteCallback)
         itemTouchHelper.attachToRecyclerView(recyclerView)
+
     }
 
     private fun deleteFromDB(id: String, order: ItemOrder) {
@@ -95,11 +96,11 @@ class OrderFragment : Fragment() {
         database.child("order").child(id).addListenerForSingleValueEvent(object :ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
                 if(snapshot.exists()){
-
+                    layout.visibility = View.GONE
                     getAllOrders(id)
                 }
                 else{
-                    //do nothing
+                   layout.visibility = View.VISIBLE
                 }
             }
 

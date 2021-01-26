@@ -112,7 +112,7 @@ class CartFragment : Fragment(), CartListener, QuantityListener {
                             )
                             choosenItems.add(grocery)
 
-                            Toast.makeText(requireContext(), stock, Toast.LENGTH_SHORT).show()
+                            //Toast.makeText(requireContext(), stock, Toast.LENGTH_SHORT).show()
                         }
                         if (choosenItems.size > 0) {
                             var price: Int = 0

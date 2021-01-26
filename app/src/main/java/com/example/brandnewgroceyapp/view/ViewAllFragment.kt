@@ -3,6 +3,7 @@ package com.example.brandnewgroceyapp.view
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import android.widget.LinearLayout
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -35,11 +36,12 @@ import kotlinx.coroutines.launch
 
 
 @AndroidEntryPoint
-class ViewAllFragment : Fragment(),CartListener,SearchView.OnQueryTextListener{
+class ViewAllFragment : Fragment(), CartListener, SearchView.OnQueryTextListener {
     private lateinit var mainViewModel: MainViewModel
     private lateinit var dot: DilatingDotsProgressBar
     private var count: Int = 1
-    private lateinit var groceryRecyclerID:RecyclerView
+    private lateinit var layout: LinearLayout
+    private lateinit var groceryRecyclerID: RecyclerView
     private lateinit var database: DatabaseReference
     private lateinit var viewMode: GroceryByCategoryViewModel
 
@@ -53,6 +55,7 @@ class ViewAllFragment : Fragment(),CartListener,SearchView.OnQueryTextListener{
         viewMode = ViewModelProvider(this).get(GroceryByCategoryViewModel::class.java)
 
     }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -60,6 +63,7 @@ class ViewAllFragment : Fragment(),CartListener,SearchView.OnQueryTextListener{
         // Inflate the layout for this fragment
         setHasOptionsMenu(true)
         val view = inflater.inflate(R.layout.fragment_view_all, container, false)
+        layout = view.findViewById(R.id.showNoItem)
         database = Firebase.database.reference.child("cart")
         myView = view
         dot = view.findViewById(R.id.dotProgress)
@@ -72,6 +76,7 @@ class ViewAllFragment : Fragment(),CartListener,SearchView.OnQueryTextListener{
     private fun fetchAllGroceries() {
         mainViewModel.getAllGroceries()
     }
+
     private fun setAllGroceries(view: View) {
         mainViewModel.allGroceries.observe(viewLifecycleOwner, Observer { response ->
 
@@ -90,7 +95,7 @@ class ViewAllFragment : Fragment(),CartListener,SearchView.OnQueryTextListener{
                 is NetworkState.Success -> {
 
                     Util.hideDotProgress(dot)
-                    groceryAdapter.setGrocery(response.data!!.groceries, this,1)
+                    groceryAdapter.setGrocery(response.data!!.groceries, this, 1)
                     Log.e("Image", response.data.groceries.get(2).name)
 
                 }
@@ -100,6 +105,7 @@ class ViewAllFragment : Fragment(),CartListener,SearchView.OnQueryTextListener{
 
         })
     }
+
     private fun setGroceryAdapter(view: View) {
 
         groceryRecyclerID = view.findViewById(R.id.allGroceryRecyclerID)
@@ -111,6 +117,7 @@ class ViewAllFragment : Fragment(),CartListener,SearchView.OnQueryTextListener{
             addDuration = 500
         }
     }
+
     override fun listen(grocery: Grocery) {
         lifecycleScope.launch(Dispatchers.IO) {
             addToCart(grocery)
@@ -158,10 +165,18 @@ class ViewAllFragment : Fragment(),CartListener,SearchView.OnQueryTextListener{
 
             groceries.let {
 
-                groceryAdapter.setGrocery(it,this,1)
+                if (groceries.size==0) {
+                    layout.visibility = View.VISIBLE
+
+                } else {
+                    layout.visibility = View.GONE
+                }
+                groceryAdapter.setGrocery(it, this, 1)
+
             }
         })
     }
+
     private fun addToCart(grocery: Grocery) {
         val id = Firebase.auth.currentUser!!.uid
 
@@ -203,6 +218,7 @@ class ViewAllFragment : Fragment(),CartListener,SearchView.OnQueryTextListener{
 
 
     }
+
     fun add(grocery: Grocery, id: String) {
         database.child(id).child(grocery.id.toString()).setValue(grocery)
             .addOnCompleteListener { task ->
@@ -226,6 +242,7 @@ class ViewAllFragment : Fragment(),CartListener,SearchView.OnQueryTextListener{
 
             }
     }
+
     private fun addCount(id: String) {
         database.child("count").child(id)
             .addListenerForSingleValueEvent(object : ValueEventListener {

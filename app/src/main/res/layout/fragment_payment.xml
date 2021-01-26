@@ -88,12 +88,12 @@
 
         <com.google.android.material.button.MaterialButton
             android:layout_margin="25dp"
+            android:layout_gravity="end"
             android:layout_width="wrap_content"
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:background="@drawable/button_bg_white"
             android:text="next"
             app:iconSize="40dp"
-            android:layout_gravity="center"
             android:id="@+id/nextButtonID"
             android:textAllCaps="false"
             app:icon = "@drawable/ic_long_arrow"

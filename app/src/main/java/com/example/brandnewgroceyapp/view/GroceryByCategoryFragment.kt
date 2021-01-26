@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import android.view.animation.OvershootInterpolator
+import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
@@ -48,6 +49,7 @@ class GroceryByCategoryFragment : Fragment(), SearchView.OnQueryTextListener,Car
     private lateinit var myView: View
     private lateinit var viewMode: GroceryByCategoryViewModel
     private lateinit var categoryText: TextView
+    private lateinit var layout: LinearLayout
     private var count: Int = 1
     private lateinit var recycler:ShimmerRecyclerView
     private lateinit var database: DatabaseReference
@@ -69,6 +71,7 @@ class GroceryByCategoryFragment : Fragment(), SearchView.OnQueryTextListener,Car
         setHasOptionsMenu(true)
         database = Firebase.database.reference.child("cart")
         val view = inflater.inflate(R.layout.fragment_grocery_by_category, container, false)
+        layout = view.findViewById(R.id.showNoGroceryItem)
         myView = view
         recycler = view.findViewById(R.id.groceryByCategoryRecyclerID)
         dot = view.findViewById(R.id.dotProgressID)
@@ -169,7 +172,15 @@ class GroceryByCategoryFragment : Fragment(), SearchView.OnQueryTextListener,Car
 
             groceries.let {
 
-                adapter.setGrocery(it,this,1)
+                if (groceries.size==0) {
+                    layout.visibility = View.VISIBLE
+
+                } else {
+                    layout.visibility = View.GONE
+                }
+                    adapter.setGrocery(it,this,1)
+
+
             }
         })
     }

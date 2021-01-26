@@ -25,7 +25,7 @@ class PaymentFragment : Fragment() {
     ): View? {
 
         binding = FragmentPaymentBinding.inflate(inflater, container, false)
-        Toast.makeText(requireContext(),arg.totalPrice,Toast.LENGTH_SHORT).show()
+        //Toast.makeText(requireContext(),arg.totalPrice,Toast.LENGTH_SHORT).show()
 
         binding.nextButtonID.setOnClickListener {
             val action = PaymentFragmentDirections.actionPaymentFragmentToSuccessOrderFragment(arg.totalPrice)

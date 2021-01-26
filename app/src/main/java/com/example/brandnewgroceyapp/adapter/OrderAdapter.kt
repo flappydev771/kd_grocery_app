@@ -41,4 +41,9 @@ class OrderAdapter: RecyclerView.Adapter<OrderAdapter.OrderHolder>() {
         calculateDiff.dispatchUpdatesTo(this)
 
     }
+    fun deleteItem(position: Int){
+        val item = orders.get(position)
+        orders.remove(item)
+        notifyItemRemoved(position)
+    }
 }
