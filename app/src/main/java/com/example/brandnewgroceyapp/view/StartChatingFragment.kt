@@ -14,6 +14,7 @@ import com.example.brandnewgroceyapp.R
 import com.example.brandnewgroceyapp.adapter.ChatingAdapater
 import com.example.brandnewgroceyapp.databinding.FragmentStartChatingBinding
 import com.example.brandnewgroceyapp.model.ChatMessage
+import com.example.brandnewgroceyapp.model.ChatView
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -31,6 +32,8 @@ class StartChatingFragment : Fragment() {
     private lateinit var binding: FragmentStartChatingBinding
     val adapter: ChatingAdapater by lazy { ChatingAdapater() }
     private lateinit var database: DatabaseReference
+    private lateinit var db:DatabaseReference
+    private lateinit var chatViewDatabase:DatabaseReference
     private lateinit var mediaPlayer: MediaPlayer
     private var notFirstTime: Boolean = false
     private val args: StartChatingFragmentArgs by navArgs()
@@ -49,6 +52,7 @@ class StartChatingFragment : Fragment() {
         mediaPlayer = MediaPlayer.create(requireContext(), R.raw.fb)
         binding = FragmentStartChatingBinding.inflate(inflater, container, false)
         database = Firebase.database.reference.child("chat")
+        chatViewDatabase = Firebase.database.reference.child("chatView")
         binding.chatRecyclerID.layoutManager = LinearLayoutManager(requireContext())
         binding.chatRecyclerID.adapter = adapter
         binding.chatRecyclerID.itemAnimator = LandingAnimator().apply {
@@ -100,10 +104,25 @@ class StartChatingFragment : Fragment() {
     }
 
     fun addToDB(message: ChatMessage, currentID: String, otherID: String) {
+
+        val randomId = chatViewDatabase.push().key.toString()
+        val chatView = ChatView(
+            randomId,
+            currentUserId,
+            currentUserId,
+            message.message,
+            message.timeStamp,
+            ""
+        )
+
         database.child(currentID).child(otherID)
             .child(database.push().key.toString()).setValue(message)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
+
+
+                    addUserIntoChatView(chatView,args.id)
+                    addNumberOfChatsToUser(currentUserId,args.id)
                     getChatAndAddToAdapter()
                     binding.msgEditText.text.clear()
                    // Toasty.success(requireContext(), "sent", Toasty.LENGTH_SHORT).show()
@@ -120,6 +139,63 @@ class StartChatingFragment : Fragment() {
             }
     }
 
+    private fun addUserIntoChatView(chatView: ChatView,otherID: String) {
+
+        Toast.makeText(requireContext(),"addUserIntoChatView",Toast.LENGTH_SHORT).show()
+        chatViewDatabase.child("view").child(otherID).addListenerForSingleValueEvent(object :ValueEventListener{
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if(snapshot.exists()){
+                    for(viewUser in snapshot.children){
+                        val info = viewUser.getValue(ChatView::class.java)
+                        if(info!!.userID==chatView.userID){
+                            chatViewDatabase.child("view").child(otherID).child(info.id).removeValue()
+                            chatViewDatabase.child("view").child(otherID).child(chatView.id)
+                                .setValue(chatView)
+                        }
+                    }
+                }
+                else{
+                    chatViewDatabase.child("view").child(otherID).child(chatView.id)
+                        .setValue(chatView)
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+
+            }
+
+        })
+
+    }
+
+    private fun addNumberOfChatsToUser(currentID: String, otherID: String) {
+        chatViewDatabase.child(otherID).addListenerForSingleValueEvent(object :ValueEventListener{
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if(snapshot.exists()){
+                    var num:Int = snapshot.child("num").value.toString().toInt()
+                    num += 1
+                    val mapChatView = mapOf(
+                        "num" to num
+                    )
+                    chatViewDatabase.child(otherID).updateChildren(mapChatView)
+
+                }
+                else{
+                    val count = 1
+                    val mapChatView = mapOf(
+                        "num" to count
+                    )
+                    chatViewDatabase.child(otherID).updateChildren(mapChatView)
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                TODO("Not yet implemented")
+            }
+
+        })
+    }
+
 
     fun getFromDB(currentID: String, otherID: String) {
         database.child(currentID).child(otherID)
@@ -132,7 +208,7 @@ class StartChatingFragment : Fragment() {
                             chatMessages.add(chatMessage!!)
                         }
                         if (chatMessages[chatMessages.size - 1].from != Firebase.auth.currentUser!!.uid) {
-                            if (notFirstTime == true) {
+                            if (notFirstTime) {
                                 mediaPlayer.start()
                             } else {
                                 notFirstTime = true

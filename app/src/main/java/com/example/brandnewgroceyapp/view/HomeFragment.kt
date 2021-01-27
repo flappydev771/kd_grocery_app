@@ -55,11 +55,13 @@ class HomeFragment : Fragment(), CartListener {
     private lateinit var groceryRecyclerID: RecyclerView
     private lateinit var mainViewModel: MainViewModel
     private lateinit var database: DatabaseReference
+    private lateinit var chatDatabase:DatabaseReference
     private var ovalFactory: CountBadge.Factory? = null
     private var count: Int = 1
     private lateinit var allViewButton: MaterialButton
     private lateinit var dot: DilatingDotsProgressBar
     private lateinit var badge: CountBadge
+    private lateinit var chatBadge:CountBadge
 
     val groceryAdapter: GroceryAdapter by lazy { GroceryAdapter() }
 
@@ -78,6 +80,7 @@ class HomeFragment : Fragment(), CartListener {
         super.onStart()
         val id = Firebase.auth.currentUser!!.uid
         increaseBadge(id)
+        increaseChat(id)
     }
 
     override fun onCreateView(
@@ -97,6 +100,7 @@ class HomeFragment : Fragment(), CartListener {
         allViewButton = view.findViewById(R.id.viewAllButtonID)
         dot = view.findViewById(R.id.dotProgress)
         database = Firebase.database.reference.child("cart")
+        chatDatabase =Firebase.database.reference.child("chatView")
 
         allViewButton.setOnClickListener {
             ///Toast.makeText(requireContext(),"work",Toast.LENGTH_SHORT).show()
@@ -189,8 +193,11 @@ class HomeFragment : Fragment(), CartListener {
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.main_menu, menu)
         val item: MenuItem = menu.findItem(R.id.action_badge)
+        val chatItem: MenuItem = menu.findItem(R.id.action_chat)
         badge = Badger.sett(item, ovalFactory!!)
+        chatBadge = Badger.sett(chatItem,ovalFactory!!)
         badge.count = 0
+        chatBadge.count=0
         super.onCreateOptionsMenu(menu, inflater)
     }
 
@@ -198,6 +205,14 @@ class HomeFragment : Fragment(), CartListener {
 
         if (item.itemId == R.id.action_badge) {
             findNavController().navigate(R.id.action_homeFragment_to_cartFragment)
+        }
+        if(item.itemId==R.id.action_chat){
+            val id = Firebase.auth.currentUser!!.uid
+              chatDatabase.child(id).child("num").removeValue().addOnCompleteListener { task->
+
+                  increaseChat(id)
+
+              }
         }
 
         return super.onOptionsItemSelected(item)
@@ -292,6 +307,26 @@ class HomeFragment : Fragment(), CartListener {
 
             })
 
+    }
+
+    private fun increaseChat(id: String){
+
+        chatDatabase.child(id).addValueEventListener(object :ValueEventListener{
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if(snapshot.exists()){
+                    val num = snapshot.child("num").value.toString().toInt()
+                    chatBadge.count = num
+                }
+                else{
+                    chatBadge.count = 0
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                TODO("Not yet implemented")
+            }
+
+        })
     }
 
     private fun increaseBadge(id: String) {
