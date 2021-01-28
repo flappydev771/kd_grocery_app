@@ -7,6 +7,8 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
+import coil.load
+import coil.transform.CircleCropTransformation
 import com.bumptech.glide.Glide
 import com.example.brandnewgroceyapp.R
 import de.hdodenhof.circleimageview.CircleImageView
@@ -73,10 +75,23 @@ class BindGroceries {
                     .into(imageView)
             }
             else{
+
                 Glide.with(imageView.context).load(url)
                     .placeholder(getProgressDrawable(imageView))
                     .into(imageView)
             }
+
+        }
+
+        @BindingAdapter("setCircleImageWithCoil")
+        @JvmStatic
+        fun bindCircleImagesWithCoil(imageView: CircleImageView,url:String){
+
+           imageView.load(url) {
+               crossfade(true)
+               placeholder(getProgressDrawable(imageView))
+               transformations(CircleCropTransformation())
+           }
 
         }
 

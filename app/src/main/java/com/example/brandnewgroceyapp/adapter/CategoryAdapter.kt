@@ -22,6 +22,7 @@ import com.example.brandnewgroceyapp.util.GroceryLisener
 import com.example.brandnewgroceyapp.view.ChatFragmentDirections
 import com.example.brandnewgroceyapp.view.HomeFragmentDirections
 import de.hdodenhof.circleimageview.CircleImageView
+import es.dmoral.toasty.Toasty
 
 class CategoryAdapter : GroceryLisener, RecyclerView.Adapter<CategoryAdapter.CategoryHolder>() {
     private var categories: List<Category> = emptyList()
@@ -58,7 +59,7 @@ class CategoryAdapter : GroceryLisener, RecyclerView.Adapter<CategoryAdapter.Cat
 
     override fun listen(view: View) {
         val name = view.findViewById<TextView>(R.id.categoryNameID).text.toString()
-        Toast.makeText(view.context, name, Toast.LENGTH_SHORT).show()
+        Toasty.success(view.context, name, Toasty.LENGTH_SHORT).show()
         val action = HomeFragmentDirections.actionHomeFragmentToGroceryByCategoryFragment(name)
         Navigation.findNavController(view).navigate(action)
 
