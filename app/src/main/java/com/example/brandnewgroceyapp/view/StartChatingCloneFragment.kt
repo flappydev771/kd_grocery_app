@@ -30,7 +30,7 @@ import jp.wasabeef.recyclerview.animators.LandingAnimator
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class StartChatingFragment : Fragment() {
+class StartChatingCloneFragment : Fragment() {
 
     val currentUserId = Firebase.auth.currentUser!!.uid
     var chatMessages: MutableList<ChatMessage> = ArrayList()
@@ -43,7 +43,7 @@ class StartChatingFragment : Fragment() {
     private lateinit var chatViewDatabase:DatabaseReference
     private lateinit var mediaPlayer: MediaPlayer
     private var notFirstTime: Boolean = false
-    private val args: StartChatingFragmentArgs by navArgs()
+    private val args: StartChatingCloneFragmentArgs by navArgs()
     @Inject lateinit var sharedPreferences:SharedPreferences
     @Inject lateinit var editor: SharedPreferences.Editor
 
@@ -63,11 +63,11 @@ class StartChatingFragment : Fragment() {
 
         userDB.child(currentUserId).addListenerForSingleValueEvent(object :ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
-                  if(snapshot.exists()){
-                      val status = snapshot.child("status").value.toString()
-                      editor.putString(Util.USER_STATUS,status)
-                      editor.apply()
-                  }
+                if(snapshot.exists()){
+                    val status = snapshot.child("status").value.toString()
+                    editor.putString(Util.USER_STATUS,status)
+                    editor.apply()
+                }
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -166,7 +166,7 @@ class StartChatingFragment : Fragment() {
                     addNumberOfChatsToUser(currentUserId,args.id)
                     getChatAndAddToAdapter()
                     binding.msgEditText.text.clear()
-                   // Toasty.success(requireContext(), "sent", Toasty.LENGTH_SHORT).show()
+                    // Toasty.success(requireContext(), "sent", Toasty.LENGTH_SHORT).show()
 
                 } else {
                     Toasty.warning(

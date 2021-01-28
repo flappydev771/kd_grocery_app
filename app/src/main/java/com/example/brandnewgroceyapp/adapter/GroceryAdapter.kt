@@ -1,6 +1,7 @@
 package com.example.brandnewgroceyapp.adapter
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,6 +24,7 @@ class GroceryAdapter : RecyclerView.Adapter<GroceryAdapter.GroceryHolder>() {
     private var cartListener: CartListener? = null
     private var state: Int = 0
     private var size:Int = 10
+    private var user_state:String=""
 
 
     class GroceryHolder(itemView: AllGroceryLayoutBinding) :
@@ -48,6 +50,10 @@ class GroceryAdapter : RecyclerView.Adapter<GroceryAdapter.GroceryHolder>() {
 
     override fun onBindViewHolder(holder: GroceryHolder, position: Int) {
 
+        if(user_state == "seller"){
+            Log.e("state",user_state)
+            holder.binding.addToCartID.isEnabled = false
+        }
         holder.bind(groceries[position])
         holder.binding.addToCartID.setOnClickListener {
             cartListener!!.listen(groceries[position])
@@ -66,10 +72,10 @@ class GroceryAdapter : RecyclerView.Adapter<GroceryAdapter.GroceryHolder>() {
 
     }
 
-    fun setGrocery(newGroceries: List<Grocery>, cartListener: CartListener, state: Int) {
+    fun setGrocery(newGroceries: List<Grocery>, cartListener: CartListener, state: Int,userState:String) {
         this.cartListener = cartListener
         this.state = state
-
+         this.user_state=userState
         val groceryDiff = GroceryDiffUtil(groceries, newGroceries)
         groceries = newGroceries
         val diff = DiffUtil.calculateDiff(groceryDiff)

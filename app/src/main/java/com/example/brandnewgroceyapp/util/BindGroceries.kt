@@ -64,7 +64,21 @@ class BindGroceries {
 
         }
 
+        @BindingAdapter("setCircleImageForOther")
+        @JvmStatic
+        fun bindCircleImagesForOther(imageView: CircleImageView,url:String){
+            if(url.isEmpty()){
+                Glide.with(imageView.context).load(url)
+                    .placeholder(ContextCompat.getDrawable(imageView.context, R.drawable.boy_face))
+                    .into(imageView)
+            }
+            else{
+                Glide.with(imageView.context).load(url)
+                    .placeholder(getProgressDrawable(imageView))
+                    .into(imageView)
+            }
 
+        }
 
 
     }

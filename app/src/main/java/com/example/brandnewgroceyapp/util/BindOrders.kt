@@ -44,7 +44,7 @@ class BindOrders {
         @JvmStatic
         fun bindChatTimeAgo(textView: TextView, stamp: String){
 
-            val time = TimeAgo.using(stamp.toLong())
+            var time:String = TimeAgo.using(stamp.toLong())
             textView.text = time
         }
 

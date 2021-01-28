@@ -69,7 +69,7 @@
     <fragment
         android:id="@+id/startChatingFragment"
         android:name="com.example.brandnewgroceyapp.view.StartChatingFragment"
-        android:label="Chatting"
+        android:label="Start Chatting"
         tools:layout="@layout/fragment_start_chating" >
         <action
             android:id="@+id/action_startChatingFragment_to_chatFragment"
@@ -143,19 +143,37 @@
     <fragment
         android:id="@+id/viewAllFragment"
         android:name="com.example.brandnewgroceyapp.view.ViewAllFragment"
-        android:label="All Item"
+        android:label="All Items"
         tools:layout="@layout/fragment_view_all" >
         <action
             android:id="@+id/action_viewAllFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
     </fragment>
-    <dialog
+    <fragment
         android:id="@+id/chatViewBottomFragment"
         android:name="com.example.brandnewgroceyapp.view.ChatViewBottomFragment"
-        android:label="fragment_chat_view_bottom"
+        android:label="New Messages"
         tools:layout="@layout/fragment_chat_view_bottom" >
         <action
             android:id="@+id/action_chatViewBottomFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
-    </dialog>
+        <action
+            android:id="@+id/action_chatViewBottomFragment_to_startChatingCloneFragment"
+            app:destination="@id/startChatingCloneFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/startChatingCloneFragment"
+        android:name="com.example.brandnewgroceyapp.view.StartChatingCloneFragment"
+        android:label="Start Chatting"
+        tools:layout="@layout/fragment_start_chating_clone" >
+        <action
+            android:id="@+id/action_startChatingCloneFragment_to_chatViewBottomFragment"
+            app:destination="@id/chatViewBottomFragment" />
+        <argument
+            android:name="id"
+            app:argType="string" />
+        <argument
+            android:name="status"
+            app:argType="string" />
+    </fragment>
 </navigation>

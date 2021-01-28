@@ -1,5 +1,6 @@
 package com.example.brandnewgroceyapp.view
 
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.*
@@ -33,6 +34,7 @@ import jp.wasabeef.recyclerview.animators.LandingAnimator
 import jp.wasabeef.recyclerview.animators.SlideInUpAnimator
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 
 @AndroidEntryPoint
@@ -40,6 +42,11 @@ class ViewAllFragment : Fragment(), CartListener, SearchView.OnQueryTextListener
     private lateinit var mainViewModel: MainViewModel
     private lateinit var dot: DilatingDotsProgressBar
     private var count: Int = 1
+    private lateinit var userDB:DatabaseReference
+    @Inject
+    lateinit var editor: SharedPreferences.Editor
+    @Inject
+    lateinit var sharedPreferences: SharedPreferences
     private lateinit var layout: LinearLayout
     private lateinit var groceryRecyclerID: RecyclerView
     private lateinit var database: DatabaseReference
@@ -56,6 +63,32 @@ class ViewAllFragment : Fragment(), CartListener, SearchView.OnQueryTextListener
 
     }
 
+    override fun onStart() {
+        super.onStart()
+        saveNameAndState()
+    }
+    private fun saveNameAndState() {
+
+
+        val id = Firebase.auth.currentUser!!.uid
+        userDB.child(id).addListenerForSingleValueEvent(object :ValueEventListener{
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val name = snapshot.child("name").value.toString()
+                val state = snapshot.child("status").value.toString()
+                editor.putString(Util.USER_NAME,name)
+                editor.putString("state",state)
+                editor.apply()
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                TODO("Not yet implemented")
+            }
+
+        })
+
+
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -66,6 +99,8 @@ class ViewAllFragment : Fragment(), CartListener, SearchView.OnQueryTextListener
         layout = view.findViewById(R.id.showNoItem)
         database = Firebase.database.reference.child("cart")
         myView = view
+        userDB = Firebase.database.reference.child("user")
+
         dot = view.findViewById(R.id.dotProgress)
         fetchAllGroceries()
         setAllGroceries(view)
@@ -95,7 +130,7 @@ class ViewAllFragment : Fragment(), CartListener, SearchView.OnQueryTextListener
                 is NetworkState.Success -> {
 
                     Util.hideDotProgress(dot)
-                    groceryAdapter.setGrocery(response.data!!.groceries, this, 1)
+                    groceryAdapter.setGrocery(response.data!!.groceries, this, 1,sharedPreferences.getString("state","")!!)
                     Log.e("Image", response.data.groceries.get(2).name)
 
                 }
@@ -171,7 +206,7 @@ class ViewAllFragment : Fragment(), CartListener, SearchView.OnQueryTextListener
                 } else {
                     layout.visibility = View.GONE
                 }
-                groceryAdapter.setGrocery(it, this, 1)
+                groceryAdapter.setGrocery(it, this, 1,sharedPreferences.getString("state","")!!)
 
             }
         })

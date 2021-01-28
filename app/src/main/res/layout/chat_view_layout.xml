@@ -7,14 +7,19 @@
         <variable
             name="chatView"
             type="com.example.brandnewgroceyapp.model.ChatView" />
+    <variable
+        name="listen"
+        type="com.example.brandnewgroceyapp.util.Listener" />
+
     </data>
 
 
 <LinearLayout
     android:layout_width="match_parent"
     android:layout_margin="10dp"
+    android:onClick="@{listen::clicked}"
     android:orientation="horizontal"
-    android:background="@drawable/round_corner"
+    android:background="@drawable/round_corner_for_chat"
     android:layout_height="wrap_content">
 
     <de.hdodenhof.circleimageview.CircleImageView
@@ -42,6 +47,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="20sp"
+        android:textColor="#FFFFFF"
         android:textStyle="bold"
         android:text="@{chatView.name}"
         />
@@ -53,7 +59,7 @@
         android:ellipsize="end"
         android:maxLines="1"
         android:scrollHorizontally="true"
-        android:textColor="#AFA7A7"
+        android:textColor="#FFFFFF"
         android:textSize="20sp"
         />
 
@@ -64,6 +70,26 @@
         android:text="@{chatView.time}"
         android:textColor="#FFC107"
         setChatTimeAgo="@{chatView.time}"
+        android:textSize="17sp"
+        />
+    <TextView
+        android:id="@+id/chatViewStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:text="@{chatView.status}"
+        android:textColor="#FFC107"
+
+        android:textSize="17sp"
+        />
+    <TextView
+        android:id="@+id/chatViewUserID"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:text="@{chatView.userID}"
+        android:textColor="#FFC107"
+
         android:textSize="17sp"
         />
 </LinearLayout>

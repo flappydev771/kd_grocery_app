@@ -62,6 +62,8 @@ class HomeFragment : Fragment(), CartListener {
     private var ovalFactory: CountBadge.Factory? = null
     @Inject
     lateinit var editor: SharedPreferences.Editor
+    @Inject
+    lateinit var sharedPreferences: SharedPreferences
     private var count: Int = 1
     private lateinit var allViewButton: MaterialButton
     private lateinit var dot: DilatingDotsProgressBar
@@ -86,19 +88,20 @@ class HomeFragment : Fragment(), CartListener {
         val id = Firebase.auth.currentUser!!.uid
         increaseBadge(id)
         increaseChat(id)
-        saveName()
+        saveNameAndState()
 
     }
 
-    private fun saveName() {
+    private fun saveNameAndState() {
 
 
         val id = Firebase.auth.currentUser!!.uid
         userDB.child(id).addListenerForSingleValueEvent(object :ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
                 val name = snapshot.child("name").value.toString()
+                val state = snapshot.child("status").value.toString()
                 editor.putString(Util.USER_NAME,name)
-                editor.putString(Util.USER_PIC,"")
+                editor.putString("state",state)
                 editor.apply()
             }
 
@@ -195,7 +198,7 @@ class HomeFragment : Fragment(), CartListener {
                         }
                     }
                     Util.hideDotProgress(dot)
-                    groceryAdapter.setGrocery(response.data.groceries, this, 6)
+                    groceryAdapter.setGrocery(response.data.groceries, this, 6,sharedPreferences.getString("state","")!!)
                     allViewButton.visibility = View.VISIBLE
                     Log.e("Image", response.data.groceries.get(2).name)
 

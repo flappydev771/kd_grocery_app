@@ -1,5 +1,6 @@
 package com.example.brandnewgroceyapp.view
 
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.*
@@ -40,6 +41,7 @@ import jp.wasabeef.recyclerview.adapters.ScaleInAnimationAdapter
 import jp.wasabeef.recyclerview.animators.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class GroceryByCategoryFragment : Fragment(), SearchView.OnQueryTextListener,CartListener {
@@ -51,6 +53,11 @@ class GroceryByCategoryFragment : Fragment(), SearchView.OnQueryTextListener,Car
     private lateinit var categoryText: TextView
     private lateinit var layout: LinearLayout
     private var count: Int = 1
+    private lateinit var userDB:DatabaseReference
+    @Inject
+    lateinit var editor: SharedPreferences.Editor
+    @Inject
+    lateinit var sharedPreferences: SharedPreferences
     private lateinit var recycler:ShimmerRecyclerView
     private lateinit var database: DatabaseReference
     val adapter: GroceryAdapter by lazy { GroceryAdapter() }
@@ -63,6 +70,32 @@ class GroceryByCategoryFragment : Fragment(), SearchView.OnQueryTextListener,Car
         Log.e("Cat:", args.category)
     }
 
+    override fun onStart() {
+        super.onStart()
+        saveNameAndState()
+    }
+    private fun saveNameAndState() {
+
+
+        val id = Firebase.auth.currentUser!!.uid
+        userDB.child(id).addListenerForSingleValueEvent(object :ValueEventListener{
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val name = snapshot.child("name").value.toString()
+                val state = snapshot.child("status").value.toString()
+                editor.putString(Util.USER_NAME,name)
+                editor.putString("state",state)
+                editor.apply()
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                TODO("Not yet implemented")
+            }
+
+        })
+
+
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -73,6 +106,7 @@ class GroceryByCategoryFragment : Fragment(), SearchView.OnQueryTextListener,Car
         val view = inflater.inflate(R.layout.fragment_grocery_by_category, container, false)
         layout = view.findViewById(R.id.showNoGroceryItem)
         myView = view
+        userDB = Firebase.database.reference.child("user")
         recycler = view.findViewById(R.id.groceryByCategoryRecyclerID)
         dot = view.findViewById(R.id.dotProgressID)
         categoryText = view.findViewById(R.id.categoryTextID)
@@ -108,7 +142,7 @@ class GroceryByCategoryFragment : Fragment(), SearchView.OnQueryTextListener,Car
                     categoryText.visibility = View.VISIBLE
                     categoryText.text = args.category
                     Util.hideDotProgress(dot)
-                    adapter.setGrocery(response.data!!.groceries,this,1)
+                    adapter.setGrocery(response.data!!.groceries,this,1,sharedPreferences.getString("state","")!!)
                 }
 
             }
@@ -178,7 +212,7 @@ class GroceryByCategoryFragment : Fragment(), SearchView.OnQueryTextListener,Car
                 } else {
                     layout.visibility = View.GONE
                 }
-                    adapter.setGrocery(it,this,1)
+                    adapter.setGrocery(it,this,1,sharedPreferences.getString("state","")!!)
 
 
             }

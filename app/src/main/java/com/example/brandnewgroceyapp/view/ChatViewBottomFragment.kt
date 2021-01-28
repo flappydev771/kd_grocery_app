@@ -1,6 +1,7 @@
 package com.example.brandnewgroceyapp.view
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -25,7 +26,7 @@ import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
 
 
-class ChatViewBottomFragment : BottomSheetDialogFragment() {
+class ChatViewBottomFragment : Fragment() {
 
     private lateinit var chatViewRecycle: RecyclerView
     private val adapter by lazy { ChatViewAdapter() }
@@ -59,9 +60,11 @@ class ChatViewBottomFragment : BottomSheetDialogFragment() {
         database.child("view").child(id).addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.exists()) {
+                    chatViews.clear()
                     for (data in snapshot.children) {
                         val chatView = data.getValue(ChatView::class.java)
                         chatViews.add(chatView!!)
+                        Log.e("View",chatView.status)
 
                     }
                     adapter.setChatView(chatViews.reversed())
