@@ -42,7 +42,7 @@
                 android:id="@+id/categoryImageID"
                 android:layout_width="130dp"
                 android:layout_height="130dp"
-                setImage="@{category.image}"
+                setCircleImage="@{category.image}"
                 android:src="@drawable/breakfast"
                 app:civ_border_width="1dp"
                 android:padding="5dp"

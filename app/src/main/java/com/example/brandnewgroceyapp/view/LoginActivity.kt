@@ -2,6 +2,7 @@ package com.example.brandnewgroceyapp.view
 
 import android.app.ProgressDialog
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.View
 import androidx.core.content.ContextCompat
@@ -9,15 +10,23 @@ import androidx.databinding.DataBindingUtil
 import com.blogspot.atifsoftwares.animatoolib.Animatoo
 import com.example.brandnewgroceyapp.R
 import com.example.brandnewgroceyapp.databinding.ActivityLoginBinding
+import com.example.brandnewgroceyapp.util.Util
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class LoginActivity : BaseActivity() {
 
     private lateinit var binding: ActivityLoginBinding
     private lateinit var progressDialog: ProgressDialog
     private lateinit var mAuth: FirebaseAuth
+
+    @Inject lateinit var sharedPreferences:SharedPreferences
+    @Inject lateinit var editor:SharedPreferences.Editor
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,8 +35,16 @@ class LoginActivity : BaseActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_login)
         setToolBar()
         progressDialog = ProgressDialog(this)
+
         mAuth = Firebase.auth
         addUnderLineToText(binding.regTextId)
+
+    }
+
+    override fun onStart() {
+        super.onStart()
+        binding.logEmailID.setText(sharedPreferences.getString(Util.USER_EMAIL, ""))
+        binding.logPassID.setText(sharedPreferences.getString(Util.USER_PASS, ""))
 
     }
 
@@ -70,6 +87,16 @@ class LoginActivity : BaseActivity() {
         val email = binding.logEmailID.text.toString().trim();
         val password = binding.logPassID.text.toString().trim();
 
+        if (binding.rememberMe.isChecked) {
+
+            editor.putString(Util.USER_EMAIL, email)
+            editor.putString(Util.USER_PASS, password)
+            editor.apply()
+
+        }
+
+
+
         mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 hideCustomDialog(progressDialog)
@@ -97,4 +124,6 @@ class LoginActivity : BaseActivity() {
         finishAffinity()
 
     }
+
+    fun forgetPassword(view: View) {}
 }

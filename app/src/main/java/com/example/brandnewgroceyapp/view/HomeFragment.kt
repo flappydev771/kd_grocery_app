@@ -2,6 +2,7 @@
 
 package com.example.brandnewgroceyapp.view
 
+import android.content.SharedPreferences
 import android.graphics.Canvas
 import android.graphics.drawable.Drawable
 import android.os.Bundle
@@ -46,6 +47,7 @@ import jp.wasabeef.recyclerview.animators.SlideInRightAnimator
 import jp.wasabeef.recyclerview.animators.SlideInUpAnimator
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 
 @AndroidEntryPoint
@@ -55,8 +57,11 @@ class HomeFragment : Fragment(), CartListener {
     private lateinit var groceryRecyclerID: RecyclerView
     private lateinit var mainViewModel: MainViewModel
     private lateinit var database: DatabaseReference
+    private lateinit var userDB:DatabaseReference
     private lateinit var chatDatabase:DatabaseReference
     private var ovalFactory: CountBadge.Factory? = null
+    @Inject
+    lateinit var editor: SharedPreferences.Editor
     private var count: Int = 1
     private lateinit var allViewButton: MaterialButton
     private lateinit var dot: DilatingDotsProgressBar
@@ -81,6 +86,29 @@ class HomeFragment : Fragment(), CartListener {
         val id = Firebase.auth.currentUser!!.uid
         increaseBadge(id)
         increaseChat(id)
+        saveName()
+
+    }
+
+    private fun saveName() {
+
+
+        val id = Firebase.auth.currentUser!!.uid
+        userDB.child(id).addListenerForSingleValueEvent(object :ValueEventListener{
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val name = snapshot.child("name").value.toString()
+                editor.putString(Util.USER_NAME,name)
+                editor.putString(Util.USER_PIC,"")
+                editor.apply()
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                TODO("Not yet implemented")
+            }
+
+        })
+
+
     }
 
     override fun onCreateView(
@@ -100,6 +128,7 @@ class HomeFragment : Fragment(), CartListener {
         allViewButton = view.findViewById(R.id.viewAllButtonID)
         dot = view.findViewById(R.id.dotProgress)
         database = Firebase.database.reference.child("cart")
+        userDB = Firebase.database.reference.child("user")
         chatDatabase =Firebase.database.reference.child("chatView")
 
         allViewButton.setOnClickListener {
@@ -211,6 +240,7 @@ class HomeFragment : Fragment(), CartListener {
               chatDatabase.child(id).child("num").removeValue().addOnCompleteListener { task->
 
                   increaseChat(id)
+                  findNavController().navigate(R.id.action_homeFragment_to_chatViewBottomFragment)
 
               }
         }

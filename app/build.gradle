@@ -127,8 +127,10 @@ dependencies {
     ///toasty
     implementation 'com.github.GrenderG:Toasty:1.5.0'
     //badge
-
     implementation 'com.github.v2rc:badger:0.3'
+    //time ago
+    implementation 'com.github.marlonlom:timeago:4.0.3'
+
 
 
 

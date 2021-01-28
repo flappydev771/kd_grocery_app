@@ -4,10 +4,12 @@ import android.annotation.SuppressLint
 import android.graphics.Paint
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.bumptech.glide.Glide
-
+import com.example.brandnewgroceyapp.R
+import de.hdodenhof.circleimageview.CircleImageView
 
 
 class BindGroceries {
@@ -46,6 +48,21 @@ class BindGroceries {
               .into(imageView)
         }
 
+        @BindingAdapter("setCircleImage")
+        @JvmStatic
+        fun bindCircleImages(imageView: CircleImageView,url:String){
+            if(url.isEmpty()){
+                Glide.with(imageView.context).load(url)
+                    .placeholder(ContextCompat.getDrawable(imageView.context, R.drawable.face))
+                    .into(imageView)
+            }
+            else{
+                Glide.with(imageView.context).load(url)
+                    .placeholder(getProgressDrawable(imageView))
+                    .into(imageView)
+            }
+
+        }
 
 
 

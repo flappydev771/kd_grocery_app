@@ -1,5 +1,6 @@
 package com.example.brandnewgroceyapp.view
 
+import android.content.SharedPreferences
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.util.Log
@@ -15,6 +16,7 @@ import com.example.brandnewgroceyapp.adapter.ChatingAdapater
 import com.example.brandnewgroceyapp.databinding.FragmentStartChatingBinding
 import com.example.brandnewgroceyapp.model.ChatMessage
 import com.example.brandnewgroceyapp.model.ChatView
+import com.example.brandnewgroceyapp.util.Util
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -22,21 +24,28 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import dagger.hilt.android.AndroidEntryPoint
 import es.dmoral.toasty.Toasty
 import jp.wasabeef.recyclerview.animators.LandingAnimator
+import javax.inject.Inject
 
-
+@AndroidEntryPoint
 class StartChatingFragment : Fragment() {
+
     val currentUserId = Firebase.auth.currentUser!!.uid
     var chatMessages: MutableList<ChatMessage> = ArrayList()
     private lateinit var binding: FragmentStartChatingBinding
     val adapter: ChatingAdapater by lazy { ChatingAdapater() }
     private lateinit var database: DatabaseReference
     private lateinit var db:DatabaseReference
+    private var userName:String?=null
+    private var userPic:String?=null
     private lateinit var chatViewDatabase:DatabaseReference
     private lateinit var mediaPlayer: MediaPlayer
     private var notFirstTime: Boolean = false
     private val args: StartChatingFragmentArgs by navArgs()
+    @Inject lateinit var sharedPreferences:SharedPreferences
+
 
     override fun onStart() {
         super.onStart()
@@ -49,9 +58,16 @@ class StartChatingFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
+
         mediaPlayer = MediaPlayer.create(requireContext(), R.raw.fb)
+
         binding = FragmentStartChatingBinding.inflate(inflater, container, false)
+
+        userName = sharedPreferences.getString(Util.USER_NAME,"")
+        userPic = sharedPreferences.getString(Util.USER_PIC,"")
+
         database = Firebase.database.reference.child("chat")
+
         chatViewDatabase = Firebase.database.reference.child("chatView")
         binding.chatRecyclerID.layoutManager = LinearLayoutManager(requireContext())
         binding.chatRecyclerID.adapter = adapter
@@ -109,10 +125,10 @@ class StartChatingFragment : Fragment() {
         val chatView = ChatView(
             randomId,
             currentUserId,
-            currentUserId,
+            userName!!,
             message.message,
             message.timeStamp,
-            ""
+            userPic!!
         )
 
         database.child(currentID).child(otherID)
@@ -141,6 +157,7 @@ class StartChatingFragment : Fragment() {
 
     private fun addUserIntoChatView(chatView: ChatView,otherID: String) {
 
+        var check:Int =0
         Toast.makeText(requireContext(),"addUserIntoChatView",Toast.LENGTH_SHORT).show()
         chatViewDatabase.child("view").child(otherID).addListenerForSingleValueEvent(object :ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -151,7 +168,12 @@ class StartChatingFragment : Fragment() {
                             chatViewDatabase.child("view").child(otherID).child(info.id).removeValue()
                             chatViewDatabase.child("view").child(otherID).child(chatView.id)
                                 .setValue(chatView)
+                            check = 1
                         }
+                    }
+                    if(check==0){
+                        chatViewDatabase.child("view").child(otherID).child(chatView.id)
+                            .setValue(chatView)
                     }
                 }
                 else{

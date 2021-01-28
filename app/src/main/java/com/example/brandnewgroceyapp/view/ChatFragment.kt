@@ -65,8 +65,6 @@ class ChatFragment : Fragment() {
                    if(userId == id.value.toString())
                    {
                        seller = true
-
-
                    }
                    Log.e("id: ",id.value.toString())
                }

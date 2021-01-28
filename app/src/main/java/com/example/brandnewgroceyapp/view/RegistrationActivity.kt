@@ -2,6 +2,7 @@ package com.example.brandnewgroceyapp.view
 
 import android.app.ProgressDialog
 import android.content.Intent
+import android.content.SharedPreferences
 import android.graphics.Paint
 import android.os.Bundle
 import android.view.View
@@ -17,11 +18,15 @@ import com.blogspot.atifsoftwares.animatoolib.Animatoo
 import com.example.brandnewgroceyapp.R
 import com.example.brandnewgroceyapp.databinding.ActivityRegistrationBinding
 import com.example.brandnewgroceyapp.model.Customer
+import com.example.brandnewgroceyapp.util.Util
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
+
 
 class RegistrationActivity : BaseActivity() {
 
@@ -29,6 +34,7 @@ class RegistrationActivity : BaseActivity() {
     private lateinit var mAuth: FirebaseAuth
     private lateinit var database: DatabaseReference
     private lateinit var progressDialog: ProgressDialog
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -97,6 +103,7 @@ class RegistrationActivity : BaseActivity() {
         val password = binding.regPassID.text.toString().trim();
 
 
+
         mAuth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
@@ -114,7 +121,7 @@ class RegistrationActivity : BaseActivity() {
     private fun storeIntoData(name: String, email: String, password: String) {
 
         val id = Firebase.auth.currentUser!!.uid
-        val customer = Customer(id,name, email, password,"customer")
+        val customer = Customer(id,name, email, password,"customer","","")
 
         database.child("user").child(id).setValue(customer).addOnCompleteListener { task ->
             if (task.isSuccessful) {

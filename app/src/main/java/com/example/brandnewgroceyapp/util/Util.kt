@@ -19,6 +19,11 @@ class Util {
 
     companion object {
 
+        const val USER_NAME = "name"
+        const val USER_EMAIL = "email"
+        const val USER_PASS = "password"
+        const val USER_PIC = "pic"
+
         private fun getImageUrls(): List<Int> {
             val imageUrls: MutableList<Int> = ArrayList()
 

@@ -3,6 +3,7 @@ package com.example.brandnewgroceyapp.util
 import android.annotation.SuppressLint
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
+import com.github.marlonlom.utilities.timeago.TimeAgo
 import java.sql.Timestamp
 import java.text.SimpleDateFormat
 import java.util.*
@@ -37,6 +38,14 @@ class BindOrders {
             val timestamp = Timestamp(stamp.toLong())
             val time = SimpleDateFormat("hh:mm a").format(Date(timestamp.time))
             textView.text =time
+        }
+        @SuppressLint("SetTextI18n", "SimpleDateFormat")
+        @BindingAdapter("setChatTimeAgo")
+        @JvmStatic
+        fun bindChatTimeAgo(textView: TextView, stamp: String){
+
+            val time = TimeAgo.using(stamp.toLong())
+            textView.text = time
         }
 
 
