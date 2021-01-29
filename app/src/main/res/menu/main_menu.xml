@@ -1,19 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
 
     <item
         android:id="@+id/action_chat"
         android:icon="@drawable/ic_chat"
-        android:title="chat"
         android:iconTint="#000000"
+        android:title="chat"
         app:showAsAction="always" />
 
     <item
         android:id="@+id/action_badge"
         android:icon="@drawable/ic_shopping_cart"
-        android:title="Badge"
         android:iconTint="#000000"
+        android:title="Badge"
         app:showAsAction="always" />
+
+    <item
+        android:id="@+id/action_profile"
+        android:title="Profile" />
+    <item
+        android:id="@+id/action_logout"
+        android:title="Logout" />
+
+
 </menu>

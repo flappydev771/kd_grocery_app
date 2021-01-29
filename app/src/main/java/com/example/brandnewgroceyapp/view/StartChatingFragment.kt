@@ -58,6 +58,8 @@ class StartChatingFragment : Fragment() {
 
 
 
+
+
     private fun getCurrentStatus() {
 
 
@@ -109,7 +111,7 @@ class StartChatingFragment : Fragment() {
                 val msg = ChatMessage(currentUserId, System.currentTimeMillis().toString(), message,userPic!!)
                 val status = args.status
 
-                Toast.makeText(requireContext(), status, Toast.LENGTH_SHORT).show()
+               // Toast.makeText(requireContext(), status, Toast.LENGTH_SHORT).show()
                 Log.d("STATE", status)
                 if (status == "customer") {
                     addToDB(msg, currentUserId, args.id)
@@ -146,6 +148,7 @@ class StartChatingFragment : Fragment() {
     fun addToDB(message: ChatMessage, currentID: String, otherID: String) {
 
         val randomId = chatViewDatabase.push().key.toString()
+
         val chatView = ChatView(
             randomId,
             currentUserId,
@@ -156,8 +159,10 @@ class StartChatingFragment : Fragment() {
             sharedPreferences.getString(Util.USER_STATUS,"")!!
         )
 
+        val id = database.push().key.toString()
+
         database.child(currentID).child(otherID)
-            .child(database.push().key.toString()).setValue(message)
+            .child(id).setValue(message)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
 

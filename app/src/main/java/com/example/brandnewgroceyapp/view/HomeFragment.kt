@@ -2,6 +2,7 @@
 
 package com.example.brandnewgroceyapp.view
 
+import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Canvas
 import android.graphics.drawable.Drawable
@@ -23,6 +24,7 @@ import berlin.volders.badger.BadgeDrawable
 import berlin.volders.badger.BadgeShape
 import berlin.volders.badger.Badger
 import berlin.volders.badger.CountBadge
+import com.blogspot.atifsoftwares.animatoolib.Animatoo
 import com.example.brandnewgroceyapp.R
 import com.example.brandnewgroceyapp.adapter.CategoryAdapter
 import com.example.brandnewgroceyapp.adapter.GroceryAdapter
@@ -86,9 +88,10 @@ class HomeFragment : Fragment(), CartListener {
     override fun onStart() {
         super.onStart()
         val id = Firebase.auth.currentUser!!.uid
+        saveNameAndState()
         increaseBadge(id)
         increaseChat(id)
-        saveNameAndState()
+
 
     }
 
@@ -246,6 +249,16 @@ class HomeFragment : Fragment(), CartListener {
                   findNavController().navigate(R.id.action_homeFragment_to_chatViewBottomFragment)
 
               }
+        }
+
+        if(item.itemId == R.id.action_profile){
+
+        }
+        if(item.itemId==R.id.action_logout){
+            Firebase.auth.signOut()
+            startActivity(Intent(requireActivity(),LoginActivity::class.java))
+            Animatoo.animateSwipeRight(requireActivity())
+            requireActivity().finishAffinity()
         }
 
         return super.onOptionsItemSelected(item)
