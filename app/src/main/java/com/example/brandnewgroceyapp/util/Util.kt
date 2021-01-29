@@ -24,6 +24,8 @@ class Util {
         const val USER_PASS = "password"
         const val USER_PIC = "pic"
         const val USER_STATUS = "status"
+        const val USER_ADDRESS = "address"
+        const val USER_PHONE = "phone"
 
         private fun getImageUrls(): List<Int> {
             val imageUrls: MutableList<Int> = ArrayList()

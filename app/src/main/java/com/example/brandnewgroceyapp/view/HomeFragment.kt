@@ -59,18 +59,20 @@ class HomeFragment : Fragment(), CartListener {
     private lateinit var groceryRecyclerID: RecyclerView
     private lateinit var mainViewModel: MainViewModel
     private lateinit var database: DatabaseReference
-    private lateinit var userDB:DatabaseReference
-    private lateinit var chatDatabase:DatabaseReference
+    private lateinit var userDB: DatabaseReference
+    private lateinit var chatDatabase: DatabaseReference
     private var ovalFactory: CountBadge.Factory? = null
+
     @Inject
     lateinit var editor: SharedPreferences.Editor
+
     @Inject
     lateinit var sharedPreferences: SharedPreferences
     private var count: Int = 1
     private lateinit var allViewButton: MaterialButton
     private lateinit var dot: DilatingDotsProgressBar
     private lateinit var badge: CountBadge
-    private lateinit var chatBadge:CountBadge
+    private lateinit var chatBadge: CountBadge
 
     val groceryAdapter: GroceryAdapter by lazy { GroceryAdapter() }
 
@@ -88,7 +90,7 @@ class HomeFragment : Fragment(), CartListener {
     override fun onStart() {
         super.onStart()
         val id = Firebase.auth.currentUser!!.uid
-        saveNameAndState()
+        //saveNameAndState()
         increaseBadge(id)
         increaseChat(id)
 
@@ -99,12 +101,12 @@ class HomeFragment : Fragment(), CartListener {
 
 
         val id = Firebase.auth.currentUser!!.uid
-        userDB.child(id).addListenerForSingleValueEvent(object :ValueEventListener{
+        userDB.child(id).addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val name = snapshot.child("name").value.toString()
                 val state = snapshot.child("status").value.toString()
-                editor.putString(Util.USER_NAME,name)
-                editor.putString("state",state)
+                editor.putString(Util.USER_NAME, name)
+                editor.putString("state", state)
                 editor.apply()
             }
 
@@ -135,11 +137,11 @@ class HomeFragment : Fragment(), CartListener {
         dot = view.findViewById(R.id.dotProgress)
         database = Firebase.database.reference.child("cart")
         userDB = Firebase.database.reference.child("user")
-        chatDatabase =Firebase.database.reference.child("chatView")
+        chatDatabase = Firebase.database.reference.child("chatView")
 
         allViewButton.setOnClickListener {
             ///Toast.makeText(requireContext(),"work",Toast.LENGTH_SHORT).show()
-           findNavController().navigate(R.id.action_homeFragment_to_viewAllFragment)
+            findNavController().navigate(R.id.action_homeFragment_to_viewAllFragment)
         }
 
         Util.setSliders(view)
@@ -172,10 +174,13 @@ class HomeFragment : Fragment(), CartListener {
 
 
     private fun fetchAllGroceries() {
+
         mainViewModel.getAllGroceries()
     }
 
     private fun setAllGroceries(view: View) {
+
+        saveNameAndState()
         mainViewModel.allGroceries.observe(viewLifecycleOwner, Observer { response ->
 
             when (response) {
@@ -191,7 +196,8 @@ class HomeFragment : Fragment(), CartListener {
                     Log.e("Error", "Some Error")
                 }
                 is NetworkState.Success -> {
-
+                    saveNameAndState()
+                    val status = sharedPreferences.getString("state", "")!!
                     increaseBadge(Firebase.auth.currentUser!!.uid)
 
                     response.data!!.groceries.let {
@@ -201,7 +207,24 @@ class HomeFragment : Fragment(), CartListener {
                         }
                     }
                     Util.hideDotProgress(dot)
-                    groceryAdapter.setGrocery(response.data.groceries, this, 6,sharedPreferences.getString("state","")!!)
+                    if(status=="seller"){
+                        //Toast.makeText(requireContext(),"seller",Toast.LENGTH_SHORT).show()
+                        groceryAdapter.setGrocery(
+                            response.data.groceries,
+                            this,
+                            6,
+                            "seller"
+                        )
+                    }
+                    else{
+                        groceryAdapter.setGrocery(
+                            response.data.groceries,
+                            this,
+                            6,
+                            "customer"
+                        )
+                    }
+
                     allViewButton.visibility = View.VISIBLE
                     Log.e("Image", response.data.groceries.get(2).name)
 
@@ -230,9 +253,9 @@ class HomeFragment : Fragment(), CartListener {
         val item: MenuItem = menu.findItem(R.id.action_badge)
         val chatItem: MenuItem = menu.findItem(R.id.action_chat)
         badge = Badger.sett(item, ovalFactory!!)
-        chatBadge = Badger.sett(chatItem,ovalFactory!!)
+        chatBadge = Badger.sett(chatItem, ovalFactory!!)
         badge.count = 0
-        chatBadge.count=0
+        chatBadge.count = 0
         super.onCreateOptionsMenu(menu, inflater)
     }
 
@@ -241,22 +264,25 @@ class HomeFragment : Fragment(), CartListener {
         if (item.itemId == R.id.action_badge) {
             findNavController().navigate(R.id.action_homeFragment_to_cartFragment)
         }
-        if(item.itemId==R.id.action_chat){
+        if (item.itemId == R.id.action_chat) {
             val id = Firebase.auth.currentUser!!.uid
-              chatDatabase.child(id).child("num").removeValue().addOnCompleteListener { task->
+            chatDatabase.child(id).child("num").removeValue().addOnCompleteListener { task ->
 
-                  increaseChat(id)
-                  findNavController().navigate(R.id.action_homeFragment_to_chatViewBottomFragment)
+                increaseChat(id)
+                findNavController().navigate(R.id.action_homeFragment_to_chatViewBottomFragment)
 
-              }
+            }
         }
 
-        if(item.itemId == R.id.action_profile){
+        if (item.itemId == R.id.action_profile) {
+
+            //Toast.makeText(requireContext(),"profile",Toast.LENGTH_SHORT).show()
+            findNavController().navigate(R.id.action_homeFragment_to_profileFragment)
 
         }
-        if(item.itemId==R.id.action_logout){
+        if (item.itemId == R.id.action_logout) {
             Firebase.auth.signOut()
-            startActivity(Intent(requireActivity(),LoginActivity::class.java))
+            startActivity(Intent(requireActivity(), LoginActivity::class.java))
             Animatoo.animateSwipeRight(requireActivity())
             requireActivity().finishAffinity()
         }
@@ -355,15 +381,14 @@ class HomeFragment : Fragment(), CartListener {
 
     }
 
-    private fun increaseChat(id: String){
+    private fun increaseChat(id: String) {
 
-        chatDatabase.child(id).addValueEventListener(object :ValueEventListener{
+        chatDatabase.child(id).addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                if(snapshot.exists()){
+                if (snapshot.exists()) {
                     val num = snapshot.child("num").value.toString().toInt()
                     chatBadge.count = num
-                }
-                else{
+                } else {
                     chatBadge.count = 0
                 }
             }

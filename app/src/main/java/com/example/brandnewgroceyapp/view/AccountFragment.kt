@@ -87,7 +87,7 @@ class AccountFragment : Fragment() {
                     binding.accountAddressID.setText(address)
                     binding.accountPhnID.setText(phone)
 
-                    Toast.makeText(requireContext(), sharedPreferences.getString(Util.USER_PIC,""), Toast.LENGTH_SHORT).show()
+                   /// Toast.makeText(requireContext(), sharedPreferences.getString(Util.USER_PIC,""), Toast.LENGTH_SHORT).show()
 
                 }
             }
@@ -230,14 +230,20 @@ class AccountFragment : Fragment() {
 
                 updateChatView(user)
                 progressDialog.dismiss()
+
+                editor.putString(Util.USER_ADDRESS,user.address)
+                editor.putString(Util.USER_PHONE,user.phone)
+                editor.apply()
+
                 Toasty.success(requireContext(),"Profile is saved successfully...").show()
-                if(sharedPreferences.getString("state","")=="customer"){
+
+
                     defDatabase.child("profile").child(currentUserID).updateChildren(
                         mapOf(
                             "exist" to "1"
                         )
                     )
-                }
+
 
             }
             else{

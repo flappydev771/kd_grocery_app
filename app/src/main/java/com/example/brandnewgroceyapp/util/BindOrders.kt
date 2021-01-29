@@ -48,6 +48,19 @@ class BindOrders {
             textView.text = time
         }
 
+        @SuppressLint("SetTextI18n")
+        @BindingAdapter("setAddress")
+        @JvmStatic
+        fun bindAddress(textView: TextView, address: String){
+            textView.text = "Address: $address"
+        }
+        @SuppressLint("SetTextI18n")
+        @BindingAdapter("setPhone")
+        @JvmStatic
+        fun bindPhone(textView: TextView, address: String){
+            textView.text = "Phone no: $address"
+        }
+
 
     }
 }

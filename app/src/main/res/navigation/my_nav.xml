@@ -30,6 +30,9 @@
         <action
             android:id="@+id/action_homeFragment_to_chatViewBottomFragment"
             app:destination="@id/chatViewBottomFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
     </fragment>
     <fragment
         android:id="@+id/orderFragment"
@@ -176,4 +179,12 @@
             android:name="status"
             app:argType="string" />
     </fragment>
+    <dialog
+        android:id="@+id/profileFragment"
+        android:name="com.example.brandnewgroceyapp.view.ProfileFragment"
+        android:label="ProfileFragment" >
+        <action
+            android:id="@+id/action_profileFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </dialog>
 </navigation>
