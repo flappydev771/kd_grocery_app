@@ -7,6 +7,7 @@ data class ItemOrder(
  var deliveryDate:String ="",
  var totalPrice:String="",
  var phone:String="",
- var address:String=""
+ var address:String="",
+ var customerName:String=""
 
 )

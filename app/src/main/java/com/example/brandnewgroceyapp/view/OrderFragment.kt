@@ -1,6 +1,8 @@
 package com.example.brandnewgroceyapp.view
 
+import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -22,10 +24,12 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import dagger.hilt.android.AndroidEntryPoint
 import es.dmoral.toasty.Toasty
 import jp.wasabeef.recyclerview.animators.SlideInUpAnimator
+import javax.inject.Inject
 
-
+@AndroidEntryPoint
 class OrderFragment : Fragment() {
 
     private lateinit var database: DatabaseReference
@@ -35,11 +39,49 @@ class OrderFragment : Fragment() {
     private lateinit var orderRecyclerView: RecyclerView
     private val adapter by lazy { OrderAdapter() }
     private var orders:MutableList<ItemOrder> = ArrayList()
+    @Inject lateinit var sharedPreferences: SharedPreferences
 
     override fun onStart() {
         super.onStart()
         checkOrder(id)
+        checkOrderForSeller()
     }
+
+    private fun checkOrderForSeller() {
+
+        val status = sharedPreferences.getString("state","")
+        if(status == "seller"){
+
+           database.child("order").addValueEventListener(object :ValueEventListener{
+               override fun onDataChange(snapshot: DataSnapshot) {
+                   orders.clear()
+                   for(child in snapshot.children){
+                       for(data in child.children){
+                           val order = data.getValue(ItemOrder::class.java)
+                           orders.add(order!!)
+                       }
+                   }
+                   if(orders.size==0){
+                       layout.visibility = View.VISIBLE
+                       adapter.setData(orders)
+                       adapter.notifyDataSetChanged()
+                   }
+                   else{
+                       layout.visibility = View.GONE
+                       adapter.setData(orders.asReversed())
+                       adapter.notifyDataSetChanged()
+                   }
+
+               }
+
+               override fun onCancelled(error: DatabaseError) {
+                   TODO("Not yet implemented")
+               }
+
+           })
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

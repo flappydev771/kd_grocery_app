@@ -43,6 +43,15 @@
                 android:layout_marginLeft="20dp"
                 android:textSize="20sp"
                 android:layout_marginRight="20dp"
+                setName="@{order.customerName}"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="20dp"
+                android:textSize="20sp"
+                android:layout_marginRight="20dp"
                 setOrderDate="@{order.orderDate}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>

@@ -57,10 +57,15 @@ class BindOrders {
         @SuppressLint("SetTextI18n")
         @BindingAdapter("setPhone")
         @JvmStatic
-        fun bindPhone(textView: TextView, address: String){
-            textView.text = "Phone no: $address"
+        fun bindPhone(textView: TextView, phone: String){
+            textView.text = "Phone no: $phone"
         }
-
+        @SuppressLint("SetTextI18n")
+        @BindingAdapter("setName")
+        @JvmStatic
+        fun bindName(textView: TextView, name: String){
+            textView.text = "Customer Name: $name"
+        }
 
     }
 }

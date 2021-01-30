@@ -80,7 +80,8 @@ class SuccessOrderFragment : Fragment() {
         val orderID = database.push().key.toString()
         val address = sharedPreferences.getString(Util.USER_ADDRESS, "")
         val phone = sharedPreferences.getString(Util.USER_PHONE, "")
-        val order = ItemOrder(orderID, date, "Cash on Delivery", date, args.totalPrice,phone!!,address!!)
+        val name = sharedPreferences.getString(Util.USER_NAME,"")
+        val order = ItemOrder(orderID, date, "Cash on Delivery", date, args.totalPrice,phone!!,address!!,name!!)
 
         database.child("order").child(id).child(orderID).setValue(order)
             .addOnCompleteListener { task ->
