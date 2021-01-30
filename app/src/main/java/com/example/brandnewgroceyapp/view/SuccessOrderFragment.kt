@@ -39,38 +39,20 @@ class SuccessOrderFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        Toast.makeText(requireContext(), args.totalPrice, Toast.LENGTH_SHORT).show()
+        //Toast.makeText(requireContext(), args.totalPrice, Toast.LENGTH_SHORT).show()
         val view = inflater.inflate(R.layout.fragment_success_order, container, false)
         database = Firebase.database.reference
         view.findViewById<TextView>(R.id.showTotalText).text =
             "Total Price: " + args.totalPrice + "৳"
         val id = Firebase.auth.currentUser!!.uid
 
-       checkProfile(id)
 
+        creteOrderIntoDB(id)
 
         return view
     }
 
-    private fun checkProfile(id: String) {
-        database.child("profile")
-            .child(id).addListenerForSingleValueEvent(object :ValueEventListener{
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    if(snapshot.exists()){
-                        creteOrderIntoDB(id)
-                    }
-                    else{
-                        Toasty.error(requireContext(), "You need to create profile to place order...", Toasty.LENGTH_SHORT)
-                            .show()
-                    }
-                }
 
-                override fun onCancelled(error: DatabaseError) {
-                    TODO("Not yet implemented")
-                }
-
-            })
-    }
 
     @SuppressLint("SimpleDateFormat")
     private fun creteOrderIntoDB(id: String) {

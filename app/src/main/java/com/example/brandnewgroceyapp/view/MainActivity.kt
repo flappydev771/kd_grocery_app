@@ -1,12 +1,12 @@
 package com.example.brandnewgroceyapp.view
 
-import androidx.appcompat.app.AppCompatActivity
+import android.content.Intent
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
-import android.widget.Toast
+import android.view.LayoutInflater
+import android.widget.Button
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -39,7 +39,9 @@ class MainActivity : AppCompatActivity() {
             )
         )
 
-        findViewById<BottomNavigationView>(R.id.bottomNavigationView).setupWithNavController(navController)
+        findViewById<BottomNavigationView>(R.id.bottomNavigationView).setupWithNavController(
+            navController
+        )
         setupActionBarWithNavController(navController, appBarConfiguration)
 
 
@@ -59,4 +61,30 @@ class MainActivity : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         return navController.navigateUp() or super.onSupportNavigateUp()
     }
+
+    fun showCustomDialog(){
+
+        val alert = AlertDialog.Builder(this)
+        val view = LayoutInflater.from(this).inflate(R.layout.custom_dialog_layout, null)
+        val yes = view.findViewById<Button>(R.id.yes_button_id)
+        val no = view.findViewById<Button>(R.id.no_button_id)
+        alert.setView(view)
+
+        val dialog = alert.create()
+
+        yes.setOnClickListener {
+
+            finishAndRemoveTask()
+        }
+        no.setOnClickListener {
+            dialog.dismiss()
+        }
+        dialog.show()
+
+    }
+
+    override fun onBackPressed() {
+        showCustomDialog()
+    }
+
 }

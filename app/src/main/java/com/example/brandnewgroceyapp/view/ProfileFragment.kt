@@ -49,7 +49,6 @@ class ProfileFragment : BottomSheetDialogFragment() {
                         binding.noProfileError.visibility = View.VISIBLE
                         binding.profileFound.visibility = View.GONE
 
-
                     }
                 }
 

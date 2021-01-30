@@ -96,7 +96,7 @@ class RegistrationActivity : BaseActivity() {
 
 
     private fun register() {
-        Toast.makeText(this, "work", Toast.LENGTH_SHORT).show()
+        //Toast.makeText(this, "work", Toast.LENGTH_SHORT).show()
 
         val name = binding.regNameId.text.toString().trim();
         val email = binding.regEmailID.text.toString().trim();

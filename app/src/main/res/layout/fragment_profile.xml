@@ -1,305 +1,233 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<layout>
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".view.ProfileFragment">
+    xmlns:tools="http://schemas.android.com/tools">
 
-
-
-
-    <LinearLayout
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:background="#0F353A"
-        android:orientation="vertical"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        tools:context=".view.ProfileFragment">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_margin="20dp"
-            android:visibility="gone"
-            android:id="@+id/noProfileError"
-            android:padding="20dp"
-
+            android:background="@drawable/profile_grad"
+            android:orientation="vertical"
             android:layout_height="wrap_content">
-            <androidx.cardview.widget.CardView
+            <LinearLayout
+                android:visibility="gone"
+                android:id="@+id/noProfileError"
                 android:layout_width="match_parent"
-                app:cardBackgroundColor="#0F353A"
-                android:layout_gravity="center"
-                android:layout_height="150dp">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:orientation="vertical"
-                    android:layout_height="wrap_content">
-                    <ImageView
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
-                        android:layout_gravity="center"
-                        android:src="@drawable/ic_profile_not"
-                        />
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textAlignment="center"
-                        android:textSize="25sp"
-                      android:textColor="#fff"
-                        android:text="No Profile Created"/>
-                </LinearLayout>
-
-            </androidx.cardview.widget.CardView>
-        </LinearLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:id="@+id/profileFound"
-            android:layout_height="match_parent">
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/cardView"
-                android:layout_width="0dp"
-
-                android:layout_height="200dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="36dp"
-                android:layout_marginEnd="16dp"
-                app:cardCornerRadius="10dp"
-                app:cardElevation="3dp"
-                app:cardUseCompatPadding="true"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <LinearLayout
+                android:layout_height="wrap_content">
+                <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center">
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginRight="30dp"
+                    android:layout_marginBottom="30dp"
+                    app:cardBackgroundColor="#43F48DB0"
+                    app:cardCornerRadius="10dp"
+                    app:cardUseCompatPadding="true">
 
-                    <androidx.constraintlayout.widget.ConstraintLayout
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="10dp">
+                        android:layout_marginBottom="10dp"
+                        android:orientation="vertical"
+                        android:padding="7dp">
+
+                        <ImageView
+                            android:layout_width="130dp"
+                            android:layout_height="130dp"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="35dp"
+                            android:padding="5dp"
+                            android:src="@drawable/ic_profile_not" />
+
+                        <TextView
+
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="3dp"
+                            android:text="Profile not created"
+                            android:textAlignment="center"
+                            android:textColor="#FFFFFF"
+                            android:textSize="20sp"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:id="@+id/profileFound"
+                android:orientation="vertical">
+
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginRight="30dp"
+                    app:cardBackgroundColor="#43F48DB0"
+                    app:cardCornerRadius="10dp"
+                    app:cardUseCompatPadding="true">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:orientation="vertical"
+                        android:padding="7dp">
 
                         <de.hdodenhof.circleimageview.CircleImageView
                             android:id="@+id/profileImageID"
-                            android:layout_width="150dp"
-                            android:layout_height="150dp"
-                            android:layout_margin="10dp"
+                            android:layout_width="130dp"
+                            android:layout_height="130dp"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="35dp"
                             android:padding="5dp"
-                            android:src="@drawable/profile"
-                            app:civ_border_color="#828697"
-                            app:civ_border_width="1dp"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
+                            android:src="@drawable/breakfast"
+                            app:civ_border_color="#FF000000"
+                            app:civ_border_width="1dp" />
 
-                    </androidx.constraintlayout.widget.ConstraintLayout>
+                        <TextView
+                            android:id="@+id/profileNameID"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:fontFamily="@font/crafty_girls"
+                            android:text="Kaushique Dhrubo"
+                            android:textAlignment="center"
+                            android:textColor="#FFFFFF"
+                            android:textSize="20sp"
+                            android:textStyle="bold" />
 
+                        <TextView
+                            android:id="@+id/profileEmailID"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="3dp"
+                            android:fontFamily="@font/crafty_girls"
+                            android:text="Kaushique@gmail.com"
+                            android:textAlignment="center"
+                            android:textColor="#FFFFFF"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
 
-                </LinearLayout>
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
 
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/cardView4"
-
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="24dp"
-                android:layout_marginEnd="16dp"
-                app:cardCornerRadius="10dp"
-                app:cardElevation="3dp"
-                app:cardUseCompatPadding="true"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/cardView">
-
-                <LinearLayout
+                <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center">
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginRight="30dp"
+                    app:cardBackgroundColor="#43F48DB0"
+                    app:cardCornerRadius="10dp"
+                    app:cardUseCompatPadding="true">
 
-                    <androidx.constraintlayout.widget.ConstraintLayout
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_margin="10dp">
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="7dp">
 
+                        <ImageView
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="15dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginBottom="5dp"
+                            android:padding="6dp"
+                            android:src="@drawable/ic_phone" />
 
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/textInputLayout7"
-                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                            android:layout_width="match_parent"
+                        <TextView
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="8dp"
-                            android:layout_marginTop="24dp"
-                            android:layout_marginEnd="8dp"
-                            app:boxCornerRadiusBottomEnd="20dp"
-                            app:boxCornerRadiusBottomStart="20dp"
-                            app:boxCornerRadiusTopEnd="20dp"
-                            app:boxCornerRadiusTopStart="20dp"
-                            app:boxStrokeColor="#FFC107"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:startIconDrawable="@drawable/ic_person">
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="2dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginBottom="5dp"
+                            android:padding="6dp"
+                            android:text="+88"
+                            android:textColor="#FFFFFF"
+                            android:textSize="17sp" />
 
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/profileNameID"
-                                android:layout_width="match_parent"
-                                app:tint="#fff"
-                                android:focusable="false"
-                                android:cursorVisible="false"
-                                android:layout_height="wrap_content"
-                                android:hint="Name*"
-
-                                />
-                        </com.google.android.material.textfield.TextInputLayout>
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/textInputLayout5"
-                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                            android:layout_width="match_parent"
+                        <TextView
+                            android:id="@+id/profilePhnID"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="8dp"
-                            android:layout_marginTop="16dp"
-                            android:layout_marginEnd="8dp"
-                            app:boxCornerRadiusBottomEnd="20dp"
-                            app:boxCornerRadiusBottomStart="20dp"
-                            app:boxCornerRadiusTopEnd="20dp"
-                            app:boxCornerRadiusTopStart="20dp"
-                            app:boxStrokeColor="#FFC107"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/textInputLayout7"
-                            app:startIconDrawable="@drawable/ic_email">
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="1dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginBottom="5dp"
+                            android:padding="6dp"
+                            android:text="01957964777"
+                            android:textColor="#FFFFFF"
+                            android:textSize="17sp" />
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
 
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/profileEmailID"
-                                android:layout_width="match_parent"
-                                app:tint="#fff"
-                                android:focusable="false"
-                                android:cursorVisible="false"
-                                android:layout_height="wrap_content"
-                                android:hint="Email*"
-                                />
-                        </com.google.android.material.textfield.TextInputLayout>
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="8dp"
-                            android:layout_marginTop="16dp"
-                            android:layout_marginEnd="8dp"
-                            android:layout_marginBottom="24dp"
-                            app:boxCornerRadiusBottomEnd="20dp"
-                            app:boxCornerRadiusBottomStart="20dp"
-                            app:boxCornerRadiusTopEnd="20dp"
-                            app:boxCornerRadiusTopStart="20dp"
-                            app:boxStrokeColor="#FFC107"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/textInputLayout5"
-                            app:startIconDrawable="@drawable/ic_phone">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/profilePhnID"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:hint="Phone no*"
-                                app:tint="#fff"
-                                android:focusable="false"
-                                android:cursorVisible="false"
-                                android:inputType="phone" />
-                        </com.google.android.material.textfield.TextInputLayout>
-
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-                </LinearLayout>
-
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/cardView6"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="24dp"
-                android:layout_marginEnd="16dp"
-                app:cardCornerRadius="10dp"
-                app:cardElevation="3dp"
-                app:cardUseCompatPadding="true"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/cardView4">
-
-                <LinearLayout
+                <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center">
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginRight="30dp"
+                    android:layout_marginBottom="30dp"
+                    app:cardBackgroundColor="#43F48DB0"
+                    app:cardCornerRadius="10dp"
+                    app:cardUseCompatPadding="true">
 
-                    <androidx.constraintlayout.widget.ConstraintLayout
+                    <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_margin="10dp">
+                        android:layout_height="wrap_content">
 
-                        <RelativeLayout
+                        <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent">
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:padding="7dp">
 
-                            <com.google.android.material.textfield.TextInputLayout
-                                android:id="@+id/textInputLayout6"
-                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                                android:layout_width="match_parent"
+                            <ImageView
+                                android:layout_width="35dp"
+                                android:layout_height="35dp"
+                                android:layout_gravity="center"
+                                android:layout_marginLeft="15dp"
+                                android:layout_marginTop="5dp"
+                                android:layout_marginBottom="5dp"
+                                android:padding="6dp"
+                                android:src="@drawable/ic_house"
+                                app:tint="#FFF" />
+
+                            <TextView
+                                android:id="@+id/profileAddressID"
+                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginStart="8dp"
-                                android:layout_marginTop="16dp"
-                                android:layout_marginEnd="8dp"
-                                android:layout_marginBottom="16dp"
-                                app:boxCornerRadiusBottomEnd="20dp"
-                                app:boxCornerRadiusBottomStart="20dp"
-                                app:boxCornerRadiusTopEnd="20dp"
-                                app:boxCornerRadiusTopStart="20dp"
-                                app:boxStrokeColor="#FFC107"
+                                android:layout_gravity="center"
+                                android:layout_marginLeft="1dp"
+                                android:layout_marginTop="5dp"
+                                android:layout_marginBottom="5dp"
+                                android:padding="6dp"
+                                android:text="nayarhat,ashulia,savar,dhaka"
+                                android:textColor="#FFFFFF"
+                                android:textSize="19sp" />
+                        </LinearLayout>
+                    </RelativeLayout>
 
-                                app:startIconDrawable="@drawable/ic_house">
+                </androidx.cardview.widget.CardView>
 
-                                <com.google.android.material.textfield.TextInputEditText
-                                    android:id="@+id/profileAddressID"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    app:tint="#fff"
-                                    android:focusable="false"
-                                    android:cursorVisible="false"
-                                    android:hint="Address*"
-                                    />
-                            </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
 
-                        </RelativeLayout>
+        </LinearLayout>
 
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-                </LinearLayout>
-
-            </androidx.cardview.widget.CardView>
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </LinearLayout>
-
-
-</androidx.core.widget.NestedScrollView>
+    </androidx.core.widget.NestedScrollView>
 </layout>
